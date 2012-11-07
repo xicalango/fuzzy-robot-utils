@@ -3,9 +3,9 @@ package xx.btw2009.beans;
 import xx.btw2009.dao.SetterFor;
 import xx.btw2009.dao.TableName;
 
-@TableName("Land")
-public class Land implements BTW2009Bean {
-	
+@TableName("Partei")
+public class Partei implements BTW2009Bean {
+
 	private int id;
 	private String name;
 	
@@ -26,5 +26,7 @@ public class Land implements BTW2009Bean {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	
 	
 }
