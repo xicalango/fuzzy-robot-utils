@@ -9,13 +9,22 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: raw; Type: SCHEMA; Schema: -; Owner: alexx
+-- Name: raw2005; Type: SCHEMA; Schema: -; Owner: alexx
 --
 
-CREATE SCHEMA raw;
+CREATE SCHEMA raw2005;
 
 
-ALTER SCHEMA raw OWNER TO alexx;
+ALTER SCHEMA raw2005 OWNER TO alexx;
+
+--
+-- Name: raw2009; Type: SCHEMA; Schema: -; Owner: alexx
+--
+
+CREATE SCHEMA raw2009;
+
+
+ALTER SCHEMA raw2009 OWNER TO alexx;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -44,6 +53,60 @@ CREATE FUNCTION get_bundesland_id_by_name(bundesland_name character varying, jah
 
 ALTER FUNCTION public.get_bundesland_id_by_name(bundesland_name character varying, jahr integer) OWNER TO alexx;
 
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: Land; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "Land" (
+    id integer NOT NULL,
+    name character varying(30),
+    jahr integer
+);
+
+
+ALTER TABLE public."Land" OWNER TO postgres;
+
+--
+-- Name: get_laender_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+--
+
+CREATE FUNCTION get_laender_by_jahr(integer) RETURNS SETOF "Land"
+    LANGUAGE sql
+    AS $_$
+SELECT * FROM "Land" WHERE jahr = $1;$_$;
+
+
+ALTER FUNCTION public.get_laender_by_jahr(integer) OWNER TO alexx;
+
+--
+-- Name: Landesliste; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "Landesliste" (
+    id integer NOT NULL,
+    listenplatz integer,
+    land_id integer,
+    partei_id integer
+);
+
+
+ALTER TABLE public."Landesliste" OWNER TO postgres;
+
+--
+-- Name: get_landesliste_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+--
+
+CREATE FUNCTION get_landesliste_by_jahr(integer) RETURNS SETOF "Landesliste"
+    LANGUAGE sql
+    AS $_$SELECT * FROM "Landesliste" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr = $1);$_$;
+
+
+ALTER FUNCTION public.get_landesliste_by_jahr(integer) OWNER TO alexx;
+
 --
 -- Name: get_partei_id_by_name(character varying); Type: FUNCTION; Schema: public; Owner: alexx
 --
@@ -55,122 +118,338 @@ CREATE FUNCTION get_partei_id_by_name(partei_name character varying) RETURNS int
 
 ALTER FUNCTION public.get_partei_id_by_name(partei_name character varying) OWNER TO alexx;
 
-SET search_path = raw, pg_catalog;
+--
+-- Name: Wahlkreis; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "Wahlkreis" (
+    id integer NOT NULL,
+    name character varying(100),
+    land_id integer
+);
+
+
+ALTER TABLE public."Wahlkreis" OWNER TO postgres;
 
 --
--- Name: import_bundeslaender(integer); Type: FUNCTION; Schema: raw; Owner: alexx
+-- Name: get_wahlkreis_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+--
+
+CREATE FUNCTION get_wahlkreis_by_jahr(integer) RETURNS SETOF "Wahlkreis"
+    LANGUAGE sql
+    AS $_$
+SELECT * FROM "Wahlkreis" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr = $1);$_$;
+
+
+ALTER FUNCTION public.get_wahlkreis_by_jahr(integer) OWNER TO alexx;
+
+--
+-- Name: reset_db(); Type: FUNCTION; Schema: public; Owner: alexx
+--
+
+CREATE FUNCTION reset_db() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE 
+	rec record;
+BEGIN
+EXECUTE 'DELETE FROM "Erststimme"';
+EXECUTE 'DELETE FROM "Zweitstimme"';
+
+EXECUTE 'DELETE FROM "Direktkandidat"';
+EXECUTE 'DELETE FROM "Landeskandidat"';
+EXECUTE 'DELETE FROM "Landesliste"';
+
+EXECUTE 'DELETE FROM "Wahlbezirk"';
+EXECUTE 'DELETE FROM "Wahlkreis"';
+EXECUTE 'DELETE FROM "Land"';
+EXECUTE 'DELETE FROM "Jahr"';
+
+EXECUTE 'DELETE FROM "Partei"';
+
+FOR rec IN SELECT * FROM information_schema.sequences WHERE sequence_catalog = 'btw2009' LOOP
+	EXECUTE 'ALTER SEQUENCE "' || rec.sequence_name || '" RESTART 1';
+END LOOP;
+
+
+END;
+$$;
+
+
+ALTER FUNCTION public.reset_db() OWNER TO alexx;
+
+SET search_path = raw2005, pg_catalog;
+
+--
+-- Name: import_bundeslaender(); Type: FUNCTION; Schema: raw2005; Owner: alexx
+--
+
+CREATE FUNCTION import_bundeslaender() RETURNS void
+    LANGUAGE sql
+    AS $$
+INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Land", 2005 FROM raw2005.wahlkreise;
+$$;
+
+
+ALTER FUNCTION raw2005.import_bundeslaender() OWNER TO alexx;
+
+SET search_path = raw2009, pg_catalog;
+
+--
+-- Name: import_bundeslaender(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
 --
 
 CREATE FUNCTION import_bundeslaender(jahr integer) RETURNS void
     LANGUAGE sql
     AS $_$
-INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Bundesland", $1 FROM raw.landeslisten;
+INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Bundesland", $1 FROM raw2009.landeslisten;
 $_$;
 
 
-ALTER FUNCTION raw.import_bundeslaender(jahr integer) OWNER TO alexx;
+ALTER FUNCTION raw2009.import_bundeslaender(jahr integer) OWNER TO alexx;
 
 --
--- Name: import_direktkandidaten(); Type: FUNCTION; Schema: raw; Owner: alexx
+-- Name: import_direktkandidaten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
 --
 
 CREATE FUNCTION import_direktkandidaten() RETURNS void
-    LANGUAGE sql
-    AS $$
-INSERT INTO "Direktkandidat" ("id", "vorname", "nachname", "wahlkreis_id", "partei_id")
-	SELECT 
-		"Kandidatennummer",
-		"Vorname",
-		"Nachname", 
-		"Wahlkreis",
-		"partei_id"
-	FROM "raw"."wahlbewerber_direktkandidat";
-$$;
-
-
-ALTER FUNCTION raw.import_direktkandidaten() OWNER TO alexx;
-
---
--- Name: import_landeskandidaten(); Type: FUNCTION; Schema: raw; Owner: alexx
---
-
-CREATE FUNCTION import_landeskandidaten() RETURNS void
-    LANGUAGE sql
-    AS $$
-INSERT INTO "Landeskandidat" ("id", "vorname", "nachname", "listenrang", "landesliste_id")
-	SELECT 
-		"Kandidatennummer",
-		"VornameTitel",
-		"Nachname", 
-		"Position",
-		"Landesliste"
-	FROM "raw"."wahlbewerber_landesliste";
-$$;
-
-
-ALTER FUNCTION raw.import_landeskandidaten() OWNER TO alexx;
-
---
--- Name: import_landeslisten(integer); Type: FUNCTION; Schema: raw; Owner: alexx
---
-
-CREATE FUNCTION import_landeslisten(jahr integer) RETURNS void
-    LANGUAGE sql
+    LANGUAGE plpgsql
     AS $_$
-INSERT INTO "Landesliste" ("id", "listenplatz", "land_id", "partei_id")
-	SELECT 
-		"Listennummer",
-		"Listennummer", 
-		get_bundesland_id_by_name("Bundesland", $1),
-		get_partei_id_by_name("Partei")
-	FROM "raw"."landeslisten";
+DECLARE
+	rec record;
+
+	newid integer;
+BEGIN
+
+	EXECUTE 'DROP TABLE IF EXISTS raw2009.mapid_direktkandidaten';
+	EXECUTE 'CREATE TABLE raw2009.mapid_direktkandidaten ( id_old INTEGER PRIMARY KEY, id_new INTEGER );';
+
+	DELETE FROM "Direktkandidat" WHERE wahlkreis_id IN (SELECT id FROM get_wahlkreis_by_jahr(2009)); --Alte 2009er wahlkreise löschen
+
+	FOR rec IN SELECT 
+			"Kandidatennummer",
+			"Vorname",
+			"Nachname", 
+			"Wahlkreis",
+			"partei_id"
+		FROM raw2009."wahlbewerber_direktkandidat"
+	LOOP
+
+		INSERT INTO "Direktkandidat" ("vorname", "nachname", "wahlkreis_id", "partei_id") 
+			VALUES ( rec."Vorname", rec."Nachname", raw2009.map_wahlkreis( rec."Wahlkreis" ), rec.partei_id )
+			RETURNING "id" INTO newid;
+
+		INSERT INTO raw2009."mapid_direktkandidaten"  ( "id_old", "id_new" )
+			VALUES  ( rec."Kandidatennummer", newid );
+
+		EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_direktkandidat(integer)
+  RETURNS integer AS
+''SELECT id_new FROM raw2009.mapid_direktkandidaten WHERE id_old = $1 LIMIT 1;''
+  LANGUAGE sql VOLATILE
+  COST 100;';
+		
+	END LOOP;
+
+END;
+
 $_$;
 
 
-ALTER FUNCTION raw.import_landeslisten(jahr integer) OWNER TO alexx;
+ALTER FUNCTION raw2009.import_direktkandidaten() OWNER TO alexx;
 
 --
--- Name: import_parteien(); Type: FUNCTION; Schema: raw; Owner: alexx
+-- Name: import_landeskandidaten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION import_landeskandidaten() RETURNS void
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+	rec record;
+
+	newid integer;
+BEGIN
+
+	EXECUTE 'DROP TABLE IF EXISTS raw2009.mapid_landeskandidaten';
+	EXECUTE 'CREATE TABLE raw2009.mapid_landeskandidaten ( id_old INTEGER PRIMARY KEY, id_new INTEGER );';
+
+	DELETE FROM "Landeskandidat" WHERE landesliste_id IN (SELECT id FROM get_landesliste_by_jahr(2009)); --Alte 2009er einträge löschen
+
+	FOR rec IN SELECT 
+			"Kandidatennummer",
+			"VornameTitel",
+			"Nachname", 
+			"Position",
+			"Landesliste"
+		FROM raw2009."wahlbewerber_landesliste"
+	LOOP
+
+		INSERT INTO "Landeskandidat" ("vorname", "nachname", "listenrang", "landesliste_id") 
+			VALUES ( rec."VornameTitel", rec."Nachname", rec."Position", raw2009.map_landesliste(rec."Landesliste") )
+			RETURNING "id" INTO newid;
+
+		INSERT INTO raw2009."mapid_landeskandidaten"  ( "id_old", "id_new" )
+			VALUES  ( rec."Kandidatennummer", newid );
+
+		EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_landeskandidat(integer)
+  RETURNS integer AS
+''SELECT id_new FROM raw2009.mapid_landeskandidaten WHERE id_old = $1 LIMIT 1;''
+  LANGUAGE sql VOLATILE
+  COST 100;';
+		
+	END LOOP;
+
+END;
+
+$_$;
+
+
+ALTER FUNCTION raw2009.import_landeskandidaten() OWNER TO alexx;
+
+--
+-- Name: import_landeslisten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION import_landeslisten() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+	rec record;
+
+	newid integer;
+BEGIN
+
+	EXECUTE 'DROP TABLE IF EXISTS raw2009.mapid_landeslisten';
+	EXECUTE 'CREATE TABLE raw2009.mapid_landeslisten ( id_old INTEGER PRIMARY KEY, id_new INTEGER );';
+
+	DELETE FROM "Landesliste" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr=2009); --Alte 2009er landesliste löschen
+
+	FOR rec IN SELECT 
+			"Listennummer" listen_nr,
+			get_bundesland_id_by_name("Bundesland", 2009) land_id,
+			get_partei_id_by_name("Partei") partei_id
+		FROM raw2009."landeslisten"
+	LOOP
+
+		INSERT INTO "Landesliste" ("listenplatz", "land_id", "partei_id") 
+			VALUES ( rec.listen_nr, rec.land_id, rec.partei_id ) 
+			RETURNING "id" INTO newid;
+
+		INSERT INTO raw2009."mapid_landeslisten"  ( "id_old", "id_new" )
+			VALUES  ( rec.listen_nr, newid );
+		
+	END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION raw2009.import_landeslisten() OWNER TO alexx;
+
+--
+-- Name: import_parteien(); Type: FUNCTION; Schema: raw2009; Owner: alexx
 --
 
 CREATE FUNCTION import_parteien() RETURNS void
     LANGUAGE sql
     AS $$
+DELETE FROM "Partei";
 INSERT INTO "Partei" ("name") SELECT * FROM
 (
-	SELECT DISTINCT "Partei" FROM raw.landeslisten
+	SELECT DISTINCT "Partei" FROM raw2009.landeslisten
 	UNION
-	SELECT DISTINCT "Partei" FROM raw.wahlbewerber WHERE "Partei" IS NOT NULL
+	SELECT DISTINCT "Partei" FROM raw2009.wahlbewerber WHERE "Partei" IS NOT NULL
 ) p;$$;
 
 
-ALTER FUNCTION raw.import_parteien() OWNER TO alexx;
+ALTER FUNCTION raw2009.import_parteien() OWNER TO alexx;
 
 --
--- Name: import_wahlkreise(integer); Type: FUNCTION; Schema: raw; Owner: alexx
+-- Name: import_wahlkreise(); Type: FUNCTION; Schema: raw2009; Owner: alexx
 --
 
-CREATE FUNCTION import_wahlkreise(jahr integer) RETURNS void
-    LANGUAGE sql
+CREATE FUNCTION import_wahlkreise() RETURNS void
+    LANGUAGE plpgsql
     AS $$
-INSERT INTO "Wahlkreis" ("id", "name", "land_id")
-	SELECT 
-		"WahlkreisNr", 
-		"Name", 
-		get_bundesland_id_by_name("Land", 2009) 
-	FROM raw.wahlkreise 
-	WHERE "WahlkreisNr" < 900 --WahlkreisNr >=900 sind "Insgesamt Werte"
-	;
+DECLARE
+	rec record;
+
+	newid integer;
+BEGIN
+
+	EXECUTE 'DROP TABLE IF EXISTS raw2009.mapid_wahlkreise';
+	EXECUTE 'CREATE TABLE raw2009.mapid_wahlkreise ( id_old INTEGER PRIMARY KEY, id_new INTEGER );';
+
+	DELETE FROM "Wahlkreis" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr=2009); --Alte 2009er wahlkreise löschen
+
+	FOR rec IN SELECT 
+			"WahlkreisNr" wknr, 
+			"Name" n , 
+			get_bundesland_id_by_name("Land", 2009) blnr,
+			"Wahlberechtigte" ber
+		FROM raw2009.wahlkreise 
+		WHERE "WahlkreisNr" < 900 --WahlkreisNr >=900 sind "Insgesamt Werte"
+	LOOP
+
+		INSERT INTO "Wahlkreis" ("name", "land_id") 
+			VALUES ( rec.n, rec.blnr ) 
+			RETURNING "id" INTO newid;
+
+		INSERT INTO raw2009."mapid_wahlkreise"  ( "id_old", "id_new" )
+			VALUES  ( rec.wknr, newid );
+		
+	END LOOP;
+	 
+END;
 $$;
 
 
-ALTER FUNCTION raw.import_wahlkreise(jahr integer) OWNER TO alexx;
+ALTER FUNCTION raw2009.import_wahlkreise() OWNER TO alexx;
+
+--
+-- Name: map_direktkandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION map_direktkandidat(integer) RETURNS integer
+    LANGUAGE sql
+    AS $_$SELECT id_new FROM raw2009.mapid_direktkandidaten WHERE id_old = $1 LIMIT 1;$_$;
+
+
+ALTER FUNCTION raw2009.map_direktkandidat(integer) OWNER TO alexx;
+
+--
+-- Name: map_landeskandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION map_landeskandidat(integer) RETURNS integer
+    LANGUAGE sql
+    AS $_$SELECT id_new FROM raw2009.mapid_landeskandidaten WHERE id_old = $1 LIMIT 1;$_$;
+
+
+ALTER FUNCTION raw2009.map_landeskandidat(integer) OWNER TO alexx;
+
+--
+-- Name: map_landesliste(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION map_landesliste(integer) RETURNS integer
+    LANGUAGE sql
+    AS $_$SELECT id_new FROM raw2009.mapid_landeslisten WHERE id_old = $1 LIMIT 1;$_$;
+
+
+ALTER FUNCTION raw2009.map_landesliste(integer) OWNER TO alexx;
+
+--
+-- Name: map_wahlkreis(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+--
+
+CREATE FUNCTION map_wahlkreis(integer) RETURNS integer
+    LANGUAGE sql
+    AS $_$SELECT id_new FROM raw2009.mapid_wahlkreise WHERE id_old = $1 LIMIT 1;$_$;
+
+
+ALTER FUNCTION raw2009.map_wahlkreis(integer) OWNER TO alexx;
 
 SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- Name: Direktkandidat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -254,19 +533,6 @@ CREATE TABLE "Jahr" (
 ALTER TABLE public."Jahr" OWNER TO postgres;
 
 --
--- Name: Land; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE "Land" (
-    id integer NOT NULL,
-    name character varying(30),
-    jahr integer
-);
-
-
-ALTER TABLE public."Land" OWNER TO postgres;
-
---
 -- Name: Land_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -322,20 +588,6 @@ ALTER TABLE public."Landeskandidat_id_seq" OWNER TO postgres;
 
 ALTER SEQUENCE "Landeskandidat_id_seq" OWNED BY "Landeskandidat".id;
 
-
---
--- Name: Landesliste; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE "Landesliste" (
-    id integer NOT NULL,
-    listenplatz integer,
-    land_id integer,
-    partei_id integer
-);
-
-
-ALTER TABLE public."Landesliste" OWNER TO postgres;
 
 --
 -- Name: Landesliste_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -427,19 +679,6 @@ ALTER SEQUENCE "Wahlbezirk_id_seq" OWNED BY "Wahlbezirk".id;
 
 
 --
--- Name: Wahlkreis; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE "Wahlkreis" (
-    id integer NOT NULL,
-    name character varying(100),
-    land_id integer
-);
-
-
-ALTER TABLE public."Wahlkreis" OWNER TO postgres;
-
---
 -- Name: Wahlkreis_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -494,10 +733,63 @@ ALTER TABLE public."Zweitstimme_id_seq" OWNER TO postgres;
 ALTER SEQUENCE "Zweitstimme_id_seq" OWNED BY "Zweitstimme".id;
 
 
-SET search_path = raw, pg_catalog;
+SET search_path = raw2005, pg_catalog;
 
 --
--- Name: landeslisten; Type: TABLE; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: wahlbewerber; Type: TABLE; Schema: raw2005; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE wahlbewerber (
+    "Vorname" character varying(100),
+    "Name" character varying(100),
+    "Partei" character varying(100),
+    "Wahlkreis" integer,
+    "Land" character varying(100),
+    "Platz" integer,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE raw2005.wahlbewerber OWNER TO alexx;
+
+--
+-- Name: wahlbewerber_id_seq; Type: SEQUENCE; Schema: raw2005; Owner: alexx
+--
+
+CREATE SEQUENCE wahlbewerber_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE raw2005.wahlbewerber_id_seq OWNER TO alexx;
+
+--
+-- Name: wahlbewerber_id_seq; Type: SEQUENCE OWNED BY; Schema: raw2005; Owner: alexx
+--
+
+ALTER SEQUENCE wahlbewerber_id_seq OWNED BY wahlbewerber.id;
+
+
+--
+-- Name: wahlkreise; Type: TABLE; Schema: raw2005; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE wahlkreise (
+    "Nummer" integer NOT NULL,
+    "Land" character varying(100),
+    "Name" character varying(100)
+);
+
+
+ALTER TABLE raw2005.wahlkreise OWNER TO alexx;
+
+SET search_path = raw2009, pg_catalog;
+
+--
+-- Name: landeslisten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 CREATE TABLE landeslisten (
@@ -507,10 +799,10 @@ CREATE TABLE landeslisten (
 );
 
 
-ALTER TABLE raw.landeslisten OWNER TO alexx;
+ALTER TABLE raw2009.landeslisten OWNER TO alexx;
 
 --
--- Name: listenplaetze; Type: TABLE; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: listenplaetze; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 CREATE TABLE listenplaetze (
@@ -520,10 +812,58 @@ CREATE TABLE listenplaetze (
 );
 
 
-ALTER TABLE raw.listenplaetze OWNER TO alexx;
+ALTER TABLE raw2009.listenplaetze OWNER TO alexx;
 
 --
--- Name: wahlbewerber; Type: TABLE; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: mapid_direktkandidaten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE mapid_direktkandidaten (
+    id_old integer NOT NULL,
+    id_new integer
+);
+
+
+ALTER TABLE raw2009.mapid_direktkandidaten OWNER TO alexx;
+
+--
+-- Name: mapid_landeskandidaten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE mapid_landeskandidaten (
+    id_old integer NOT NULL,
+    id_new integer
+);
+
+
+ALTER TABLE raw2009.mapid_landeskandidaten OWNER TO alexx;
+
+--
+-- Name: mapid_landeslisten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE mapid_landeslisten (
+    id_old integer NOT NULL,
+    id_new integer
+);
+
+
+ALTER TABLE raw2009.mapid_landeslisten OWNER TO alexx;
+
+--
+-- Name: mapid_wahlkreise; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+CREATE TABLE mapid_wahlkreise (
+    id_old integer NOT NULL,
+    id_new integer
+);
+
+
+ALTER TABLE raw2009.mapid_wahlkreise OWNER TO alexx;
+
+--
+-- Name: wahlbewerber; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 CREATE TABLE wahlbewerber (
@@ -536,10 +876,10 @@ CREATE TABLE wahlbewerber (
 );
 
 
-ALTER TABLE raw.wahlbewerber OWNER TO alexx;
+ALTER TABLE raw2009.wahlbewerber OWNER TO alexx;
 
 --
--- Name: wahlbewerber_mit_wahlkreis; Type: TABLE; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: wahlbewerber_mit_wahlkreis; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 CREATE TABLE wahlbewerber_mit_wahlkreis (
@@ -551,30 +891,30 @@ CREATE TABLE wahlbewerber_mit_wahlkreis (
 );
 
 
-ALTER TABLE raw.wahlbewerber_mit_wahlkreis OWNER TO alexx;
+ALTER TABLE raw2009.wahlbewerber_mit_wahlkreis OWNER TO alexx;
 
 --
--- Name: wahlbewerber_direktkandidat; Type: VIEW; Schema: raw; Owner: alexx
+-- Name: wahlbewerber_direktkandidat; Type: VIEW; Schema: raw2009; Owner: alexx
 --
 
 CREATE VIEW wahlbewerber_direktkandidat AS
     SELECT w."Kandidatennummer", ww."Vorname", ww."Nachname", ww."Wahlkreis", public.get_partei_id_by_name(ww."Partei") AS partei_id FROM wahlbewerber_mit_wahlkreis ww, wahlbewerber w WHERE (((((ww."Vorname")::text = (w."Vorname")::text) AND ((ww."Nachname")::text = (w."Nachname")::text)) AND (ww."Jahrgang" = w."Jahrgang")) AND ((public.get_partei_id_by_name(ww."Partei") IS NULL) OR ((ww."Partei")::text = (w."Partei")::text)));
 
 
-ALTER TABLE raw.wahlbewerber_direktkandidat OWNER TO alexx;
+ALTER TABLE raw2009.wahlbewerber_direktkandidat OWNER TO alexx;
 
 --
--- Name: wahlbewerber_landesliste; Type: VIEW; Schema: raw; Owner: alexx
+-- Name: wahlbewerber_landesliste; Type: VIEW; Schema: raw2009; Owner: alexx
 --
 
 CREATE VIEW wahlbewerber_landesliste AS
     SELECT CASE WHEN (w."Titel" IS NULL) THEN (w."Vorname")::text ELSE (((w."Titel")::text || ' '::text) || (w."Vorname")::text) END AS "VornameTitel", w."Nachname", w."Partei", w."Jahrgang", w."Kandidatennummer", lp."Landesliste", lp."Position" FROM wahlbewerber w, listenplaetze lp WHERE (w."Kandidatennummer" = lp."Kandidat");
 
 
-ALTER TABLE raw.wahlbewerber_landesliste OWNER TO alexx;
+ALTER TABLE raw2009.wahlbewerber_landesliste OWNER TO alexx;
 
 --
--- Name: wahlkreise; Type: TABLE; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: wahlkreise; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 CREATE TABLE wahlkreise (
@@ -586,7 +926,7 @@ CREATE TABLE wahlkreise (
 );
 
 
-ALTER TABLE raw.wahlkreise OWNER TO alexx;
+ALTER TABLE raw2009.wahlkreise OWNER TO alexx;
 
 SET search_path = public, pg_catalog;
 
@@ -653,6 +993,17 @@ ALTER TABLE ONLY "Wahlkreis" ALTER COLUMN id SET DEFAULT nextval('"Wahlkreis_id_
 ALTER TABLE ONLY "Zweitstimme" ALTER COLUMN id SET DEFAULT nextval('"Zweitstimme_id_seq"'::regclass);
 
 
+SET search_path = raw2005, pg_catalog;
+
+--
+-- Name: id; Type: DEFAULT; Schema: raw2005; Owner: alexx
+--
+
+ALTER TABLE ONLY wahlbewerber ALTER COLUMN id SET DEFAULT nextval('wahlbewerber_id_seq'::regclass);
+
+
+SET search_path = public, pg_catalog;
+
 --
 -- Name: Direktkandidat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -702,6 +1053,14 @@ ALTER TABLE ONLY "Landesliste"
 
 
 --
+-- Name: Partei_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY "Partei"
+    ADD CONSTRAINT "Partei_name_key" UNIQUE (name);
+
+
+--
 -- Name: Partei_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -733,10 +1092,28 @@ ALTER TABLE ONLY "Zweitstimme"
     ADD CONSTRAINT "Zweitstimme_pkey" PRIMARY KEY (id);
 
 
-SET search_path = raw, pg_catalog;
+SET search_path = raw2005, pg_catalog;
 
 --
--- Name: landeslisten_pkey; Type: CONSTRAINT; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: Wahlkreise2005_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY wahlkreise
+    ADD CONSTRAINT "Wahlkreise2005_pkey" PRIMARY KEY ("Nummer");
+
+
+--
+-- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY wahlbewerber
+    ADD CONSTRAINT wahlbewerber_pkey PRIMARY KEY (id);
+
+
+SET search_path = raw2009, pg_catalog;
+
+--
+-- Name: landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 ALTER TABLE ONLY landeslisten
@@ -744,7 +1121,7 @@ ALTER TABLE ONLY landeslisten
 
 
 --
--- Name: listenplaetze_pkey; Type: CONSTRAINT; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: listenplaetze_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 ALTER TABLE ONLY listenplaetze
@@ -752,7 +1129,39 @@ ALTER TABLE ONLY listenplaetze
 
 
 --
--- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: mapid_direktkandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY mapid_direktkandidaten
+    ADD CONSTRAINT mapid_direktkandidaten_pkey PRIMARY KEY (id_old);
+
+
+--
+-- Name: mapid_landeskandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY mapid_landeskandidaten
+    ADD CONSTRAINT mapid_landeskandidaten_pkey PRIMARY KEY (id_old);
+
+
+--
+-- Name: mapid_landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY mapid_landeslisten
+    ADD CONSTRAINT mapid_landeslisten_pkey PRIMARY KEY (id_old);
+
+
+--
+-- Name: mapid_wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+--
+
+ALTER TABLE ONLY mapid_wahlkreise
+    ADD CONSTRAINT mapid_wahlkreise_pkey PRIMARY KEY (id_old);
+
+
+--
+-- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlbewerber
@@ -760,7 +1169,7 @@ ALTER TABLE ONLY wahlbewerber
 
 
 --
--- Name: wahlkreise_pkey; Type: CONSTRAINT; Schema: raw; Owner: alexx; Tablespace: 
+-- Name: wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlkreise
@@ -865,10 +1274,10 @@ ALTER TABLE ONLY "Zweitstimme"
     ADD CONSTRAINT "Zweitstimme_wahlbezirk_id_fkey" FOREIGN KEY (wahlbezirk_id) REFERENCES "Wahlbezirk"(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
-SET search_path = raw, pg_catalog;
+SET search_path = raw2009, pg_catalog;
 
 --
--- Name: listenplaetze_Kandidat_fkey; Type: FK CONSTRAINT; Schema: raw; Owner: alexx
+-- Name: listenplaetze_Kandidat_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: alexx
 --
 
 ALTER TABLE ONLY listenplaetze
@@ -876,7 +1285,7 @@ ALTER TABLE ONLY listenplaetze
 
 
 --
--- Name: listenplaetze_Landesliste_fkey; Type: FK CONSTRAINT; Schema: raw; Owner: alexx
+-- Name: listenplaetze_Landesliste_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: alexx
 --
 
 ALTER TABLE ONLY listenplaetze
