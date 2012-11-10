@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public enum DBConnections implements DBConnection {
-	LOCALHOST("org.postgresql.Driver", "jdbc:postgresql://localhost/btw2009", "alexx", "alexx");
+	LOCALHOST("org.postgresql.Driver", "jdbc:postgresql://localhost/btw2009", "alexx", "alexx"),
+	LINK("org.postgresql.Driver", "jdbc:postgresql://192.168.34.209/btw2009", "alexx", "alexx");
 
 	private String driverClass;
 	private String connectionString;
