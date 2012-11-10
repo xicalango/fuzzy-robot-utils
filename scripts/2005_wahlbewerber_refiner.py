@@ -45,13 +45,22 @@ for i in range(1, len(rows)):
 	
 	
 with open('bewerber2005.csv', 'w') as csvfile:
-	writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+	writer = csv.writer(csvfile, delimiter=',', quotechar='"')
 	writer.writerow(["Vorname","Name","Partei","Wahlkreis","Land","Platz"])
 
 	for b in bewerbers:
 	
+		try:
+			wahlkreis = int(b["wahlkreis"])
+		except ValueError:
+			wahlkreis = None
+			
+		try:
+			platz = int(b["platz"])
+		except ValueError:
+			platz = None
 	
-		writer.writerow([ b["vorname"][1:],b["name"],b["partei"],b["wahlkreis"],b["land"],b["platz"] ])
+		writer.writerow([ b["vorname"][1:],b["name"],b["partei"],wahlkreis,b["land"], platz])
 	
 
 
