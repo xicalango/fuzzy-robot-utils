@@ -24,6 +24,7 @@ for i in range(1, len(rows)):
 		d = 1
 		
 
+
 	bewerber = {
 		"name": row[0],
 		"vorname": row[1],
@@ -37,11 +38,21 @@ for i in range(1, len(rows)):
 	
 	
 with open('bewerber2005.csv', 'w') as csvfile:
-	writer = csv.writer(csvfile, delimiter=';', quotechar='"')
+	writer = csv.writer(csvfile, delimiter=',', quotechar='"')
 	writer.writerow(["Vorname","Name","Partei","Wahlkreis","Land","Platz"])
 
 	for b in bewerbers:
-	    writer.writerow([ b["vorname"][1:],b["name"],b["partei"],b["wahlkreis"],b["land"],b["platz"] ])
+		wahlkreis = None
+		
+		if len(b["wahlkreis"]) > 0:
+			wahlkreis = b["wahlkreis"]
+			
+		platz = None
+		if len(b["platz"]) > 0:
+			platz = b["platz"]
+		
+	
+		writer.writerow([ b["vorname"][1:],b["name"],b["partei"],wahlkreis,b["land"],platz ])
 	
 
 
