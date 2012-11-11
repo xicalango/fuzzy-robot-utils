@@ -2,6 +2,10 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.1.6
+-- Dumped by pg_dump version 9.1.6
+-- Started on 2012-11-11 14:56:27 CET
+
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
@@ -9,32 +13,33 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: raw2005; Type: SCHEMA; Schema: -; Owner: alexx
+-- TOC entry 8 (class 2615 OID 16693)
+-- Name: raw2005; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA raw2005;
 
 
-ALTER SCHEMA raw2005 OWNER TO alexx;
-
 --
--- Name: raw2009; Type: SCHEMA; Schema: -; Owner: alexx
+-- TOC entry 7 (class 2615 OID 16387)
+-- Name: raw2009; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA raw2009;
 
 
-ALTER SCHEMA raw2009 OWNER TO alexx;
-
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- TOC entry 201 (class 3079 OID 11645)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- TOC entry 2083 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -43,7 +48,9 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
--- Name: get_bundesland_id_by_name(character varying, integer); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 213 (class 1255 OID 16388)
+-- Dependencies: 5
+-- Name: get_bundesland_id_by_name(character varying, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION get_bundesland_id_by_name(bundesland_name character varying, jahr integer) RETURNS integer
@@ -51,14 +58,14 @@ CREATE FUNCTION get_bundesland_id_by_name(bundesland_name character varying, jah
     AS $_$SELECT l.id FROM public."Land" l WHERE l.name = $1 AND l.jahr = $2 LIMIT 1;$_$;
 
 
-ALTER FUNCTION public.get_bundesland_id_by_name(bundesland_name character varying, jahr integer) OWNER TO alexx;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: Land; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 168 (class 1259 OID 16409)
+-- Dependencies: 5
+-- Name: Land; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Land" (
@@ -68,10 +75,10 @@ CREATE TABLE "Land" (
 );
 
 
-ALTER TABLE public."Land" OWNER TO postgres;
-
 --
--- Name: get_laender_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 220 (class 1255 OID 16717)
+-- Dependencies: 554 5
+-- Name: get_laender_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION get_laender_by_jahr(integer) RETURNS SETOF "Land"
@@ -80,10 +87,10 @@ CREATE FUNCTION get_laender_by_jahr(integer) RETURNS SETOF "Land"
 SELECT * FROM "Land" WHERE jahr = $1;$_$;
 
 
-ALTER FUNCTION public.get_laender_by_jahr(integer) OWNER TO alexx;
-
 --
--- Name: Landesliste; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 172 (class 1259 OID 16419)
+-- Dependencies: 5
+-- Name: Landesliste; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Landesliste" (
@@ -94,10 +101,10 @@ CREATE TABLE "Landesliste" (
 );
 
 
-ALTER TABLE public."Landesliste" OWNER TO postgres;
-
 --
--- Name: get_landesliste_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 231 (class 1255 OID 16668)
+-- Dependencies: 5 562
+-- Name: get_landesliste_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION get_landesliste_by_jahr(integer) RETURNS SETOF "Landesliste"
@@ -105,10 +112,10 @@ CREATE FUNCTION get_landesliste_by_jahr(integer) RETURNS SETOF "Landesliste"
     AS $_$SELECT * FROM "Landesliste" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr = $1);$_$;
 
 
-ALTER FUNCTION public.get_landesliste_by_jahr(integer) OWNER TO alexx;
-
 --
--- Name: get_partei_id_by_name(character varying); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 214 (class 1255 OID 16389)
+-- Dependencies: 5
+-- Name: get_partei_id_by_name(character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION get_partei_id_by_name(partei_name character varying) RETURNS integer
@@ -116,10 +123,10 @@ CREATE FUNCTION get_partei_id_by_name(partei_name character varying) RETURNS int
     AS $_$SELECT p.id FROM public."Partei" p WHERE p.name = $1 LIMIT 1;$_$;
 
 
-ALTER FUNCTION public.get_partei_id_by_name(partei_name character varying) OWNER TO alexx;
-
 --
--- Name: Wahlkreis; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 178 (class 1259 OID 16434)
+-- Dependencies: 5
+-- Name: Wahlkreis; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Wahlkreis" (
@@ -129,10 +136,10 @@ CREATE TABLE "Wahlkreis" (
 );
 
 
-ALTER TABLE public."Wahlkreis" OWNER TO postgres;
-
 --
--- Name: get_wahlkreis_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 219 (class 1255 OID 16642)
+-- Dependencies: 5 574
+-- Name: get_wahlkreis_by_jahr(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION get_wahlkreis_by_jahr(integer) RETURNS SETOF "Wahlkreis"
@@ -141,10 +148,41 @@ CREATE FUNCTION get_wahlkreis_by_jahr(integer) RETURNS SETOF "Wahlkreis"
 SELECT * FROM "Wahlkreis" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr = $1);$_$;
 
 
-ALTER FUNCTION public.get_wahlkreis_by_jahr(integer) OWNER TO alexx;
+--
+-- TOC entry 229 (class 1255 OID 16722)
+-- Dependencies: 5
+-- Name: initialize_db(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION initialize_db() RETURNS void
+    LANGUAGE sql
+    AS $$
+
+--reset db to zero
+SELECT reset_db();
+
+--2009
+INSERT INTO "Jahr" VALUES (2009);
+SELECT raw2009.import_bundeslaender();
+SELECT raw2009.import_parteien();
+SELECT raw2009.import_wahlkreise();
+SELECT raw2009.import_landeslisten();
+SELECT raw2009.import_landeskandidaten();
+SELECT raw2009.import_direktkandidaten();
+
+--2005
+INSERT INTO "Jahr" VALUES (2005);
+--SELECT raw2005.import_bundeslaender();
+--SELECT raw2005.import_parteien();
+--SELECT raw2005.import_wahlkreise();
+
+$$;
+
 
 --
--- Name: reset_db(); Type: FUNCTION; Schema: public; Owner: alexx
+-- TOC entry 222 (class 1255 OID 16583)
+-- Dependencies: 637 5
+-- Name: reset_db(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION reset_db() RETURNS void
@@ -167,7 +205,7 @@ EXECUTE 'DELETE FROM "Jahr"';
 
 EXECUTE 'DELETE FROM "Partei"';
 
-FOR rec IN SELECT * FROM information_schema.sequences WHERE sequence_catalog = 'btw2009' LOOP
+FOR rec IN SELECT * FROM information_schema.sequences WHERE sequence_catalog = 'btw2009' AND sequence_schema = 'public' LOOP
 	EXECUTE 'ALTER SEQUENCE "' || rec.sequence_name || '" RESTART 1';
 END LOOP;
 
@@ -176,12 +214,12 @@ END;
 $$;
 
 
-ALTER FUNCTION public.reset_db() OWNER TO alexx;
-
 SET search_path = raw2005, pg_catalog;
 
 --
--- Name: import_bundeslaender(); Type: FUNCTION; Schema: raw2005; Owner: alexx
+-- TOC entry 217 (class 1255 OID 16716)
+-- Dependencies: 8
+-- Name: import_bundeslaender(); Type: FUNCTION; Schema: raw2005; Owner: -
 --
 
 CREATE FUNCTION import_bundeslaender() RETURNS void
@@ -191,25 +229,101 @@ INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Land", 2005 FROM raw2005.wa
 $$;
 
 
-ALTER FUNCTION raw2005.import_bundeslaender() OWNER TO alexx;
+--
+-- TOC entry 215 (class 1255 OID 16719)
+-- Dependencies: 8
+-- Name: import_parteien(); Type: FUNCTION; Schema: raw2005; Owner: -
+--
+
+CREATE FUNCTION import_parteien() RETURNS void
+    LANGUAGE sql
+    AS $$
+INSERT INTO "Partei" ("name") SELECT * FROM
+(
+	SELECT DISTINCT trim("Partei") FROM raw2005.wahlbewerber WHERE "Partei" IS NOT NULL AND trim("Partei") NOT IN
+		(SELECT "name" FROM "Partei")
+) p;
+$$;
+
+
+--
+-- TOC entry 223 (class 1255 OID 16865)
+-- Dependencies: 8 637
+-- Name: import_wahlkreise(); Type: FUNCTION; Schema: raw2005; Owner: -
+--
+
+CREATE FUNCTION import_wahlkreise() RETURNS void
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+	rec record;
+
+	newid integer;
+BEGIN
+
+	EXECUTE 'DROP TABLE IF EXISTS raw2005.mapid_wahlkreise';
+	EXECUTE 'CREATE TABLE raw2005.mapid_wahlkreise ( id_old INTEGER PRIMARY KEY, id_new INTEGER );';
+
+	DELETE FROM "Wahlkreis" WHERE land_id IN (SELECT id FROM "Land" WHERE jahr=2005); --Alte 2005er einträge löschen
+
+	FOR rec IN SELECT 
+			"Nummer" wknr, 
+			"Name" n , 
+			get_bundesland_id_by_name("Land", 2005) blnr
+		FROM raw2005.wahlkreise 
+	LOOP
+
+		INSERT INTO "Wahlkreis" ("name", "land_id") 
+			VALUES ( rec.n, rec.blnr ) 
+			RETURNING "id" INTO newid;
+
+		INSERT INTO raw2005."mapid_wahlkreise"  ( "id_old", "id_new" )
+			VALUES  ( rec.wknr, newid );
+
+
+		
+	END LOOP;
+
+	EXECUTE 'CREATE OR REPLACE FUNCTION raw2005.map_wahlkreis(integer)
+  RETURNS integer AS
+''SELECT id_new FROM raw2005.mapid_wahlkreise WHERE id_old = $1 LIMIT 1;''
+  LANGUAGE sql VOLATILE
+  COST 100;';
+	 
+END;
+$_$;
+
+
+--
+-- TOC entry 228 (class 1255 OID 16900)
+-- Dependencies: 8
+-- Name: map_wahlkreis(integer); Type: FUNCTION; Schema: raw2005; Owner: -
+--
+
+CREATE FUNCTION map_wahlkreis(integer) RETURNS integer
+    LANGUAGE sql
+    AS $_$SELECT id_new FROM raw2005.mapid_wahlkreise WHERE id_old = $1 LIMIT 1;$_$;
+
 
 SET search_path = raw2009, pg_catalog;
 
 --
--- Name: import_bundeslaender(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 221 (class 1255 OID 16720)
+-- Dependencies: 7
+-- Name: import_bundeslaender(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
-CREATE FUNCTION import_bundeslaender(jahr integer) RETURNS void
+CREATE FUNCTION import_bundeslaender() RETURNS void
     LANGUAGE sql
-    AS $_$
-INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Bundesland", $1 FROM raw2009.landeslisten;
-$_$;
+    AS $$
+INSERT INTO "Land" ("name", "jahr") SELECT DISTINCT "Bundesland", 2009 FROM raw2009.landeslisten;
+$$;
 
-
-ALTER FUNCTION raw2009.import_bundeslaender(jahr integer) OWNER TO alexx;
 
 --
--- Name: import_direktkandidaten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 227 (class 1255 OID 16391)
+-- Dependencies: 7 637
+-- Name: import_direktkandidaten(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION import_direktkandidaten() RETURNS void
@@ -242,23 +356,23 @@ BEGIN
 		INSERT INTO raw2009."mapid_direktkandidaten"  ( "id_old", "id_new" )
 			VALUES  ( rec."Kandidatennummer", newid );
 
-		EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_direktkandidat(integer)
+	END LOOP;
+
+	EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_direktkandidat(integer)
   RETURNS integer AS
 ''SELECT id_new FROM raw2009.mapid_direktkandidaten WHERE id_old = $1 LIMIT 1;''
   LANGUAGE sql VOLATILE
   COST 100;';
-		
-	END LOOP;
 
 END;
 
 $_$;
 
 
-ALTER FUNCTION raw2009.import_direktkandidaten() OWNER TO alexx;
-
 --
--- Name: import_landeskandidaten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 230 (class 1255 OID 16392)
+-- Dependencies: 7 637
+-- Name: import_landeskandidaten(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION import_landeskandidaten() RETURNS void
@@ -290,29 +404,29 @@ BEGIN
 
 		INSERT INTO raw2009."mapid_landeskandidaten"  ( "id_old", "id_new" )
 			VALUES  ( rec."Kandidatennummer", newid );
+		
+	END LOOP;
 
-		EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_landeskandidat(integer)
+	EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_landeskandidat(integer)
   RETURNS integer AS
 ''SELECT id_new FROM raw2009.mapid_landeskandidaten WHERE id_old = $1 LIMIT 1;''
   LANGUAGE sql VOLATILE
   COST 100;';
-		
-	END LOOP;
 
 END;
 
 $_$;
 
 
-ALTER FUNCTION raw2009.import_landeskandidaten() OWNER TO alexx;
-
 --
--- Name: import_landeslisten(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 225 (class 1255 OID 16635)
+-- Dependencies: 637 7
+-- Name: import_landeslisten(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION import_landeslisten() RETURNS void
     LANGUAGE plpgsql
-    AS $$
+    AS $_$
 DECLARE
 	rec record;
 
@@ -339,37 +453,46 @@ BEGIN
 			VALUES  ( rec.listen_nr, newid );
 		
 	END LOOP;
+
+	EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_landesliste(integer)
+  RETURNS integer AS
+''SELECT id_new FROM raw2009.mapid_landeslisten WHERE id_old = $1 LIMIT 1;''
+  LANGUAGE sql VOLATILE
+  COST 100;';
+	
 END;
-$$;
+$_$;
 
-
-ALTER FUNCTION raw2009.import_landeslisten() OWNER TO alexx;
 
 --
--- Name: import_parteien(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 216 (class 1255 OID 16394)
+-- Dependencies: 7
+-- Name: import_parteien(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION import_parteien() RETURNS void
     LANGUAGE sql
     AS $$
-DELETE FROM "Partei";
+--DELETE FROM "Partei";
 INSERT INTO "Partei" ("name") SELECT * FROM
 (
-	SELECT DISTINCT "Partei" FROM raw2009.landeslisten
+	SELECT DISTINCT trim("Partei") partei FROM raw2009.landeslisten
 	UNION
-	SELECT DISTINCT "Partei" FROM raw2009.wahlbewerber WHERE "Partei" IS NOT NULL
-) p;$$;
+	SELECT DISTINCT trim("Partei") partei FROM raw2009.wahlbewerber WHERE "Partei" IS NOT NULL
+) p
+WHERE p.partei NOT IN (SELECT "name" FROM "Partei");
+$$;
 
-
-ALTER FUNCTION raw2009.import_parteien() OWNER TO alexx;
 
 --
--- Name: import_wahlkreise(); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 224 (class 1255 OID 16589)
+-- Dependencies: 637 7
+-- Name: import_wahlkreise(); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION import_wahlkreise() RETURNS void
     LANGUAGE plpgsql
-    AS $$
+    AS $_$
 DECLARE
 	rec record;
 
@@ -398,15 +521,21 @@ BEGIN
 			VALUES  ( rec.wknr, newid );
 		
 	END LOOP;
+
+	EXECUTE 'CREATE OR REPLACE FUNCTION raw2009.map_wahlkreis(integer)
+  RETURNS integer AS
+''SELECT id_new FROM raw2009.mapid_wahlkreise WHERE id_old = $1 LIMIT 1;''
+  LANGUAGE sql VOLATILE
+  COST 100;';
 	 
 END;
-$$;
+$_$;
 
-
-ALTER FUNCTION raw2009.import_wahlkreise() OWNER TO alexx;
 
 --
--- Name: map_direktkandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 233 (class 1255 OID 16662)
+-- Dependencies: 7
+-- Name: map_direktkandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION map_direktkandidat(integer) RETURNS integer
@@ -414,10 +543,10 @@ CREATE FUNCTION map_direktkandidat(integer) RETURNS integer
     AS $_$SELECT id_new FROM raw2009.mapid_direktkandidaten WHERE id_old = $1 LIMIT 1;$_$;
 
 
-ALTER FUNCTION raw2009.map_direktkandidat(integer) OWNER TO alexx;
-
 --
--- Name: map_landeskandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 232 (class 1255 OID 16689)
+-- Dependencies: 7
+-- Name: map_landeskandidat(integer); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION map_landeskandidat(integer) RETURNS integer
@@ -425,10 +554,10 @@ CREATE FUNCTION map_landeskandidat(integer) RETURNS integer
     AS $_$SELECT id_new FROM raw2009.mapid_landeskandidaten WHERE id_old = $1 LIMIT 1;$_$;
 
 
-ALTER FUNCTION raw2009.map_landeskandidat(integer) OWNER TO alexx;
-
 --
--- Name: map_landesliste(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 226 (class 1255 OID 16645)
+-- Dependencies: 7
+-- Name: map_landesliste(integer); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION map_landesliste(integer) RETURNS integer
@@ -436,10 +565,10 @@ CREATE FUNCTION map_landesliste(integer) RETURNS integer
     AS $_$SELECT id_new FROM raw2009.mapid_landeslisten WHERE id_old = $1 LIMIT 1;$_$;
 
 
-ALTER FUNCTION raw2009.map_landesliste(integer) OWNER TO alexx;
-
 --
--- Name: map_wahlkreis(integer); Type: FUNCTION; Schema: raw2009; Owner: alexx
+-- TOC entry 218 (class 1255 OID 16646)
+-- Dependencies: 7
+-- Name: map_wahlkreis(integer); Type: FUNCTION; Schema: raw2009; Owner: -
 --
 
 CREATE FUNCTION map_wahlkreis(integer) RETURNS integer
@@ -447,12 +576,12 @@ CREATE FUNCTION map_wahlkreis(integer) RETURNS integer
     AS $_$SELECT id_new FROM raw2009.mapid_wahlkreise WHERE id_old = $1 LIMIT 1;$_$;
 
 
-ALTER FUNCTION raw2009.map_wahlkreis(integer) OWNER TO alexx;
-
 SET search_path = public, pg_catalog;
 
 --
--- Name: Direktkandidat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 163 (class 1259 OID 16396)
+-- Dependencies: 5
+-- Name: Direktkandidat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Direktkandidat" (
@@ -464,10 +593,10 @@ CREATE TABLE "Direktkandidat" (
 );
 
 
-ALTER TABLE public."Direktkandidat" OWNER TO postgres;
-
 --
--- Name: Direktkandidat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 164 (class 1259 OID 16399)
+-- Dependencies: 163 5
+-- Name: Direktkandidat_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Direktkandidat_id_seq"
@@ -478,17 +607,19 @@ CREATE SEQUENCE "Direktkandidat_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Direktkandidat_id_seq" OWNER TO postgres;
-
 --
--- Name: Direktkandidat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2084 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: Direktkandidat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Direktkandidat_id_seq" OWNED BY "Direktkandidat".id;
 
 
 --
--- Name: Erststimme; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 165 (class 1259 OID 16401)
+-- Dependencies: 5
+-- Name: Erststimme; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Erststimme" (
@@ -498,10 +629,10 @@ CREATE TABLE "Erststimme" (
 );
 
 
-ALTER TABLE public."Erststimme" OWNER TO postgres;
-
 --
--- Name: Erststimme_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 166 (class 1259 OID 16404)
+-- Dependencies: 165 5
+-- Name: Erststimme_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Erststimme_id_seq"
@@ -512,17 +643,19 @@ CREATE SEQUENCE "Erststimme_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Erststimme_id_seq" OWNER TO postgres;
-
 --
--- Name: Erststimme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2085 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: Erststimme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Erststimme_id_seq" OWNED BY "Erststimme".id;
 
 
 --
--- Name: Jahr; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 167 (class 1259 OID 16406)
+-- Dependencies: 5
+-- Name: Jahr; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Jahr" (
@@ -530,10 +663,10 @@ CREATE TABLE "Jahr" (
 );
 
 
-ALTER TABLE public."Jahr" OWNER TO postgres;
-
 --
--- Name: Land_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 169 (class 1259 OID 16412)
+-- Dependencies: 5 168
+-- Name: Land_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Land_id_seq"
@@ -544,17 +677,19 @@ CREATE SEQUENCE "Land_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Land_id_seq" OWNER TO postgres;
-
 --
--- Name: Land_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2086 (class 0 OID 0)
+-- Dependencies: 169
+-- Name: Land_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Land_id_seq" OWNED BY "Land".id;
 
 
 --
--- Name: Landeskandidat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 170 (class 1259 OID 16414)
+-- Dependencies: 5
+-- Name: Landeskandidat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Landeskandidat" (
@@ -566,10 +701,10 @@ CREATE TABLE "Landeskandidat" (
 );
 
 
-ALTER TABLE public."Landeskandidat" OWNER TO postgres;
-
 --
--- Name: Landeskandidat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 171 (class 1259 OID 16417)
+-- Dependencies: 170 5
+-- Name: Landeskandidat_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Landeskandidat_id_seq"
@@ -580,17 +715,19 @@ CREATE SEQUENCE "Landeskandidat_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Landeskandidat_id_seq" OWNER TO postgres;
-
 --
--- Name: Landeskandidat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2087 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: Landeskandidat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Landeskandidat_id_seq" OWNED BY "Landeskandidat".id;
 
 
 --
--- Name: Landesliste_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 173 (class 1259 OID 16422)
+-- Dependencies: 5 172
+-- Name: Landesliste_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Landesliste_id_seq"
@@ -601,17 +738,19 @@ CREATE SEQUENCE "Landesliste_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Landesliste_id_seq" OWNER TO postgres;
-
 --
--- Name: Landesliste_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2088 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: Landesliste_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Landesliste_id_seq" OWNED BY "Landesliste".id;
 
 
 --
--- Name: Partei; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 174 (class 1259 OID 16424)
+-- Dependencies: 5
+-- Name: Partei; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Partei" (
@@ -620,10 +759,10 @@ CREATE TABLE "Partei" (
 );
 
 
-ALTER TABLE public."Partei" OWNER TO postgres;
-
 --
--- Name: Partei_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 175 (class 1259 OID 16427)
+-- Dependencies: 5 174
+-- Name: Partei_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Partei_id_seq"
@@ -634,17 +773,19 @@ CREATE SEQUENCE "Partei_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Partei_id_seq" OWNER TO postgres;
-
 --
--- Name: Partei_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2089 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: Partei_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Partei_id_seq" OWNED BY "Partei".id;
 
 
 --
--- Name: Wahlbezirk; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 176 (class 1259 OID 16429)
+-- Dependencies: 5
+-- Name: Wahlbezirk; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Wahlbezirk" (
@@ -655,10 +796,10 @@ CREATE TABLE "Wahlbezirk" (
 );
 
 
-ALTER TABLE public."Wahlbezirk" OWNER TO postgres;
-
 --
--- Name: Wahlbezirk_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 177 (class 1259 OID 16432)
+-- Dependencies: 5 176
+-- Name: Wahlbezirk_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Wahlbezirk_id_seq"
@@ -669,17 +810,19 @@ CREATE SEQUENCE "Wahlbezirk_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Wahlbezirk_id_seq" OWNER TO postgres;
-
 --
--- Name: Wahlbezirk_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2090 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: Wahlbezirk_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Wahlbezirk_id_seq" OWNED BY "Wahlbezirk".id;
 
 
 --
--- Name: Wahlkreis_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 179 (class 1259 OID 16437)
+-- Dependencies: 5 178
+-- Name: Wahlkreis_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Wahlkreis_id_seq"
@@ -690,17 +833,19 @@ CREATE SEQUENCE "Wahlkreis_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Wahlkreis_id_seq" OWNER TO postgres;
-
 --
--- Name: Wahlkreis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2091 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: Wahlkreis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Wahlkreis_id_seq" OWNED BY "Wahlkreis".id;
 
 
 --
--- Name: Zweitstimme; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 180 (class 1259 OID 16439)
+-- Dependencies: 5
+-- Name: Zweitstimme; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE "Zweitstimme" (
@@ -710,10 +855,10 @@ CREATE TABLE "Zweitstimme" (
 );
 
 
-ALTER TABLE public."Zweitstimme" OWNER TO postgres;
-
 --
--- Name: Zweitstimme_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 181 (class 1259 OID 16442)
+-- Dependencies: 180 5
+-- Name: Zweitstimme_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE "Zweitstimme_id_seq"
@@ -724,10 +869,10 @@ CREATE SEQUENCE "Zweitstimme_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."Zweitstimme_id_seq" OWNER TO postgres;
-
 --
--- Name: Zweitstimme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2092 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: Zweitstimme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE "Zweitstimme_id_seq" OWNED BY "Zweitstimme".id;
@@ -736,7 +881,34 @@ ALTER SEQUENCE "Zweitstimme_id_seq" OWNED BY "Zweitstimme".id;
 SET search_path = raw2005, pg_catalog;
 
 --
--- Name: wahlbewerber; Type: TABLE; Schema: raw2005; Owner: alexx; Tablespace: 
+-- TOC entry 192 (class 1259 OID 16866)
+-- Dependencies: 8
+-- Name: bundeslandkuerzel; Type: TABLE; Schema: raw2005; Owner: -; Tablespace: 
+--
+
+CREATE TABLE bundeslandkuerzel (
+    name character varying(100),
+    kuerzel_5 character varying(5),
+    kuerzel_2 character varying(2) NOT NULL
+);
+
+
+--
+-- TOC entry 194 (class 1259 OID 16895)
+-- Dependencies: 8
+-- Name: mapid_wahlkreise; Type: TABLE; Schema: raw2005; Owner: -; Tablespace: 
+--
+
+CREATE TABLE mapid_wahlkreise (
+    id_old integer NOT NULL,
+    id_new integer
+);
+
+
+--
+-- TOC entry 189 (class 1259 OID 16697)
+-- Dependencies: 8
+-- Name: wahlbewerber; Type: TABLE; Schema: raw2005; Owner: -; Tablespace: 
 --
 
 CREATE TABLE wahlbewerber (
@@ -750,10 +922,30 @@ CREATE TABLE wahlbewerber (
 );
 
 
-ALTER TABLE raw2005.wahlbewerber OWNER TO alexx;
+--
+-- TOC entry 193 (class 1259 OID 16871)
+-- Dependencies: 2003 8
+-- Name: wahlbewerber_mit_land; Type: VIEW; Schema: raw2005; Owner: -
+--
+
+CREATE VIEW wahlbewerber_mit_land AS
+    SELECT wb."Vorname", wb."Name", wb."Partei", wb."Wahlkreis", wb."Land", wb."Platz", wb.id, kz.name AS land_name FROM wahlbewerber wb, bundeslandkuerzel kz WHERE ((wb."Land")::text = (kz.kuerzel_2)::text);
+
 
 --
--- Name: wahlbewerber_id_seq; Type: SEQUENCE; Schema: raw2005; Owner: alexx
+-- TOC entry 195 (class 1259 OID 24910)
+-- Dependencies: 2004 8
+-- Name: wahlbewerber_direktkandidat; Type: VIEW; Schema: raw2005; Owner: -
+--
+
+CREATE VIEW wahlbewerber_direktkandidat AS
+    SELECT w.id, w."Vorname", w."Name", w."Wahlkreis", public.get_partei_id_by_name(w."Partei") AS partei_id FROM wahlbewerber_mit_land w WHERE (w."Wahlkreis" IS NOT NULL);
+
+
+--
+-- TOC entry 190 (class 1259 OID 16701)
+-- Dependencies: 8 189
+-- Name: wahlbewerber_id_seq; Type: SEQUENCE; Schema: raw2005; Owner: -
 --
 
 CREATE SEQUENCE wahlbewerber_id_seq
@@ -764,17 +956,29 @@ CREATE SEQUENCE wahlbewerber_id_seq
     CACHE 1;
 
 
-ALTER TABLE raw2005.wahlbewerber_id_seq OWNER TO alexx;
-
 --
--- Name: wahlbewerber_id_seq; Type: SEQUENCE OWNED BY; Schema: raw2005; Owner: alexx
+-- TOC entry 2093 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: wahlbewerber_id_seq; Type: SEQUENCE OWNED BY; Schema: raw2005; Owner: -
 --
 
 ALTER SEQUENCE wahlbewerber_id_seq OWNED BY wahlbewerber.id;
 
 
 --
--- Name: wahlkreise; Type: TABLE; Schema: raw2005; Owner: alexx; Tablespace: 
+-- TOC entry 196 (class 1259 OID 24914)
+-- Dependencies: 2005 8
+-- Name: wahlbewerber_landesliste; Type: VIEW; Schema: raw2005; Owner: -
+--
+
+CREATE VIEW wahlbewerber_landesliste AS
+    SELECT w.id, w."Vorname", w."Name", w."Wahlkreis", public.get_partei_id_by_name(w."Partei") AS partei_id FROM wahlbewerber_mit_land w WHERE (w."Wahlkreis" IS NULL);
+
+
+--
+-- TOC entry 191 (class 1259 OID 16709)
+-- Dependencies: 8
+-- Name: wahlkreise; Type: TABLE; Schema: raw2005; Owner: -; Tablespace: 
 --
 
 CREATE TABLE wahlkreise (
@@ -784,12 +988,12 @@ CREATE TABLE wahlkreise (
 );
 
 
-ALTER TABLE raw2005.wahlkreise OWNER TO alexx;
-
 SET search_path = raw2009, pg_catalog;
 
 --
--- Name: landeslisten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 182 (class 1259 OID 16444)
+-- Dependencies: 7
+-- Name: landeslisten; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE landeslisten (
@@ -799,10 +1003,10 @@ CREATE TABLE landeslisten (
 );
 
 
-ALTER TABLE raw2009.landeslisten OWNER TO alexx;
-
 --
--- Name: listenplaetze; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 183 (class 1259 OID 16447)
+-- Dependencies: 7
+-- Name: listenplaetze; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE listenplaetze (
@@ -812,10 +1016,10 @@ CREATE TABLE listenplaetze (
 );
 
 
-ALTER TABLE raw2009.listenplaetze OWNER TO alexx;
-
 --
--- Name: mapid_direktkandidaten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 200 (class 1259 OID 24934)
+-- Dependencies: 7
+-- Name: mapid_direktkandidaten; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE mapid_direktkandidaten (
@@ -824,10 +1028,10 @@ CREATE TABLE mapid_direktkandidaten (
 );
 
 
-ALTER TABLE raw2009.mapid_direktkandidaten OWNER TO alexx;
-
 --
--- Name: mapid_landeskandidaten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 199 (class 1259 OID 24929)
+-- Dependencies: 7
+-- Name: mapid_landeskandidaten; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE mapid_landeskandidaten (
@@ -836,10 +1040,10 @@ CREATE TABLE mapid_landeskandidaten (
 );
 
 
-ALTER TABLE raw2009.mapid_landeskandidaten OWNER TO alexx;
-
 --
--- Name: mapid_landeslisten; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 198 (class 1259 OID 24924)
+-- Dependencies: 7
+-- Name: mapid_landeslisten; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE mapid_landeslisten (
@@ -848,10 +1052,10 @@ CREATE TABLE mapid_landeslisten (
 );
 
 
-ALTER TABLE raw2009.mapid_landeslisten OWNER TO alexx;
-
 --
--- Name: mapid_wahlkreise; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 197 (class 1259 OID 24919)
+-- Dependencies: 7
+-- Name: mapid_wahlkreise; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE mapid_wahlkreise (
@@ -860,10 +1064,10 @@ CREATE TABLE mapid_wahlkreise (
 );
 
 
-ALTER TABLE raw2009.mapid_wahlkreise OWNER TO alexx;
-
 --
--- Name: wahlbewerber; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 184 (class 1259 OID 16450)
+-- Dependencies: 7
+-- Name: wahlbewerber; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE wahlbewerber (
@@ -876,10 +1080,10 @@ CREATE TABLE wahlbewerber (
 );
 
 
-ALTER TABLE raw2009.wahlbewerber OWNER TO alexx;
-
 --
--- Name: wahlbewerber_mit_wahlkreis; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 185 (class 1259 OID 16453)
+-- Dependencies: 7
+-- Name: wahlbewerber_mit_wahlkreis; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE wahlbewerber_mit_wahlkreis (
@@ -891,30 +1095,30 @@ CREATE TABLE wahlbewerber_mit_wahlkreis (
 );
 
 
-ALTER TABLE raw2009.wahlbewerber_mit_wahlkreis OWNER TO alexx;
-
 --
--- Name: wahlbewerber_direktkandidat; Type: VIEW; Schema: raw2009; Owner: alexx
+-- TOC entry 186 (class 1259 OID 16456)
+-- Dependencies: 2001 7
+-- Name: wahlbewerber_direktkandidat; Type: VIEW; Schema: raw2009; Owner: -
 --
 
 CREATE VIEW wahlbewerber_direktkandidat AS
     SELECT w."Kandidatennummer", ww."Vorname", ww."Nachname", ww."Wahlkreis", public.get_partei_id_by_name(ww."Partei") AS partei_id FROM wahlbewerber_mit_wahlkreis ww, wahlbewerber w WHERE (((((ww."Vorname")::text = (w."Vorname")::text) AND ((ww."Nachname")::text = (w."Nachname")::text)) AND (ww."Jahrgang" = w."Jahrgang")) AND ((public.get_partei_id_by_name(ww."Partei") IS NULL) OR ((ww."Partei")::text = (w."Partei")::text)));
 
 
-ALTER TABLE raw2009.wahlbewerber_direktkandidat OWNER TO alexx;
-
 --
--- Name: wahlbewerber_landesliste; Type: VIEW; Schema: raw2009; Owner: alexx
+-- TOC entry 187 (class 1259 OID 16460)
+-- Dependencies: 2002 7
+-- Name: wahlbewerber_landesliste; Type: VIEW; Schema: raw2009; Owner: -
 --
 
 CREATE VIEW wahlbewerber_landesliste AS
     SELECT CASE WHEN (w."Titel" IS NULL) THEN (w."Vorname")::text ELSE (((w."Titel")::text || ' '::text) || (w."Vorname")::text) END AS "VornameTitel", w."Nachname", w."Partei", w."Jahrgang", w."Kandidatennummer", lp."Landesliste", lp."Position" FROM wahlbewerber w, listenplaetze lp WHERE (w."Kandidatennummer" = lp."Kandidat");
 
 
-ALTER TABLE raw2009.wahlbewerber_landesliste OWNER TO alexx;
-
 --
--- Name: wahlkreise; Type: TABLE; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 188 (class 1259 OID 16464)
+-- Dependencies: 7
+-- Name: wahlkreise; Type: TABLE; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 CREATE TABLE wahlkreise (
@@ -926,68 +1130,84 @@ CREATE TABLE wahlkreise (
 );
 
 
-ALTER TABLE raw2009.wahlkreise OWNER TO alexx;
-
 SET search_path = public, pg_catalog;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2006 (class 2604 OID 16467)
+-- Dependencies: 164 163
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Direktkandidat" ALTER COLUMN id SET DEFAULT nextval('"Direktkandidat_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2007 (class 2604 OID 16468)
+-- Dependencies: 166 165
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Erststimme" ALTER COLUMN id SET DEFAULT nextval('"Erststimme_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2008 (class 2604 OID 16469)
+-- Dependencies: 169 168
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Land" ALTER COLUMN id SET DEFAULT nextval('"Land_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2009 (class 2604 OID 16470)
+-- Dependencies: 171 170
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Landeskandidat" ALTER COLUMN id SET DEFAULT nextval('"Landeskandidat_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2010 (class 2604 OID 16471)
+-- Dependencies: 173 172
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Landesliste" ALTER COLUMN id SET DEFAULT nextval('"Landesliste_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2011 (class 2604 OID 16472)
+-- Dependencies: 175 174
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Partei" ALTER COLUMN id SET DEFAULT nextval('"Partei_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2012 (class 2604 OID 16473)
+-- Dependencies: 177 176
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Wahlbezirk" ALTER COLUMN id SET DEFAULT nextval('"Wahlbezirk_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2013 (class 2604 OID 16474)
+-- Dependencies: 179 178
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Wahlkreis" ALTER COLUMN id SET DEFAULT nextval('"Wahlkreis_id_seq"'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 2014 (class 2604 OID 16475)
+-- Dependencies: 181 180
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Zweitstimme" ALTER COLUMN id SET DEFAULT nextval('"Zweitstimme_id_seq"'::regclass);
@@ -996,7 +1216,9 @@ ALTER TABLE ONLY "Zweitstimme" ALTER COLUMN id SET DEFAULT nextval('"Zweitstimme
 SET search_path = raw2005, pg_catalog;
 
 --
--- Name: id; Type: DEFAULT; Schema: raw2005; Owner: alexx
+-- TOC entry 2015 (class 2604 OID 16703)
+-- Dependencies: 190 189
+-- Name: id; Type: DEFAULT; Schema: raw2005; Owner: -
 --
 
 ALTER TABLE ONLY wahlbewerber ALTER COLUMN id SET DEFAULT nextval('wahlbewerber_id_seq'::regclass);
@@ -1005,7 +1227,9 @@ ALTER TABLE ONLY wahlbewerber ALTER COLUMN id SET DEFAULT nextval('wahlbewerber_
 SET search_path = public, pg_catalog;
 
 --
--- Name: Direktkandidat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2017 (class 2606 OID 16477)
+-- Dependencies: 163 163 2077
+-- Name: Direktkandidat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Direktkandidat"
@@ -1013,7 +1237,9 @@ ALTER TABLE ONLY "Direktkandidat"
 
 
 --
--- Name: Erststimme_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2019 (class 2606 OID 16479)
+-- Dependencies: 165 165 2077
+-- Name: Erststimme_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Erststimme"
@@ -1021,7 +1247,9 @@ ALTER TABLE ONLY "Erststimme"
 
 
 --
--- Name: Jahr_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2021 (class 2606 OID 16481)
+-- Dependencies: 167 167 2077
+-- Name: Jahr_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Jahr"
@@ -1029,7 +1257,9 @@ ALTER TABLE ONLY "Jahr"
 
 
 --
--- Name: Land_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2023 (class 2606 OID 16483)
+-- Dependencies: 168 168 2077
+-- Name: Land_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Land"
@@ -1037,7 +1267,9 @@ ALTER TABLE ONLY "Land"
 
 
 --
--- Name: Landeskandidat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2025 (class 2606 OID 16485)
+-- Dependencies: 170 170 2077
+-- Name: Landeskandidat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Landeskandidat"
@@ -1045,7 +1277,9 @@ ALTER TABLE ONLY "Landeskandidat"
 
 
 --
--- Name: Landesliste_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2027 (class 2606 OID 16487)
+-- Dependencies: 172 172 2077
+-- Name: Landesliste_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Landesliste"
@@ -1053,7 +1287,9 @@ ALTER TABLE ONLY "Landesliste"
 
 
 --
--- Name: Partei_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2029 (class 2606 OID 16631)
+-- Dependencies: 174 174 2077
+-- Name: Partei_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Partei"
@@ -1061,7 +1297,9 @@ ALTER TABLE ONLY "Partei"
 
 
 --
--- Name: Partei_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2031 (class 2606 OID 16489)
+-- Dependencies: 174 174 2077
+-- Name: Partei_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Partei"
@@ -1069,7 +1307,9 @@ ALTER TABLE ONLY "Partei"
 
 
 --
--- Name: Wahlbezirk_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2033 (class 2606 OID 16491)
+-- Dependencies: 176 176 2077
+-- Name: Wahlbezirk_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Wahlbezirk"
@@ -1077,7 +1317,9 @@ ALTER TABLE ONLY "Wahlbezirk"
 
 
 --
--- Name: Wahlkreis_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2035 (class 2606 OID 16493)
+-- Dependencies: 178 178 2077
+-- Name: Wahlkreis_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Wahlkreis"
@@ -1085,7 +1327,9 @@ ALTER TABLE ONLY "Wahlkreis"
 
 
 --
--- Name: Zweitstimme_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 2037 (class 2606 OID 16495)
+-- Dependencies: 180 180 2077
+-- Name: Zweitstimme_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY "Zweitstimme"
@@ -1095,7 +1339,9 @@ ALTER TABLE ONLY "Zweitstimme"
 SET search_path = raw2005, pg_catalog;
 
 --
--- Name: Wahlkreise2005_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: alexx; Tablespace: 
+-- TOC entry 2049 (class 2606 OID 16713)
+-- Dependencies: 191 191 2077
+-- Name: Wahlkreise2005_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlkreise
@@ -1103,7 +1349,29 @@ ALTER TABLE ONLY wahlkreise
 
 
 --
--- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: alexx; Tablespace: 
+-- TOC entry 2051 (class 2606 OID 16870)
+-- Dependencies: 192 192 2077
+-- Name: bundeslandkuerzel_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY bundeslandkuerzel
+    ADD CONSTRAINT bundeslandkuerzel_pkey PRIMARY KEY (kuerzel_2);
+
+
+--
+-- TOC entry 2053 (class 2606 OID 16899)
+-- Dependencies: 194 194 2077
+-- Name: mapid_wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY mapid_wahlkreise
+    ADD CONSTRAINT mapid_wahlkreise_pkey PRIMARY KEY (id_old);
+
+
+--
+-- TOC entry 2047 (class 2606 OID 16708)
+-- Dependencies: 189 189 2077
+-- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2005; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlbewerber
@@ -1113,7 +1381,9 @@ ALTER TABLE ONLY wahlbewerber
 SET search_path = raw2009, pg_catalog;
 
 --
--- Name: landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2039 (class 2606 OID 16497)
+-- Dependencies: 182 182 2077
+-- Name: landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY landeslisten
@@ -1121,7 +1391,9 @@ ALTER TABLE ONLY landeslisten
 
 
 --
--- Name: listenplaetze_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2041 (class 2606 OID 16499)
+-- Dependencies: 183 183 183 2077
+-- Name: listenplaetze_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY listenplaetze
@@ -1129,7 +1401,9 @@ ALTER TABLE ONLY listenplaetze
 
 
 --
--- Name: mapid_direktkandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2061 (class 2606 OID 24938)
+-- Dependencies: 200 200 2077
+-- Name: mapid_direktkandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY mapid_direktkandidaten
@@ -1137,7 +1411,9 @@ ALTER TABLE ONLY mapid_direktkandidaten
 
 
 --
--- Name: mapid_landeskandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2059 (class 2606 OID 24933)
+-- Dependencies: 199 199 2077
+-- Name: mapid_landeskandidaten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY mapid_landeskandidaten
@@ -1145,7 +1421,9 @@ ALTER TABLE ONLY mapid_landeskandidaten
 
 
 --
--- Name: mapid_landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2057 (class 2606 OID 24928)
+-- Dependencies: 198 198 2077
+-- Name: mapid_landeslisten_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY mapid_landeslisten
@@ -1153,7 +1431,9 @@ ALTER TABLE ONLY mapid_landeslisten
 
 
 --
--- Name: mapid_wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2055 (class 2606 OID 24923)
+-- Dependencies: 197 197 2077
+-- Name: mapid_wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY mapid_wahlkreise
@@ -1161,7 +1441,9 @@ ALTER TABLE ONLY mapid_wahlkreise
 
 
 --
--- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2043 (class 2606 OID 16501)
+-- Dependencies: 184 184 2077
+-- Name: wahlbewerber_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlbewerber
@@ -1169,7 +1451,9 @@ ALTER TABLE ONLY wahlbewerber
 
 
 --
--- Name: wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: alexx; Tablespace: 
+-- TOC entry 2045 (class 2606 OID 16503)
+-- Dependencies: 188 188 2077
+-- Name: wahlkreise_pkey; Type: CONSTRAINT; Schema: raw2009; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY wahlkreise
@@ -1179,7 +1463,9 @@ ALTER TABLE ONLY wahlkreise
 SET search_path = public, pg_catalog;
 
 --
--- Name: Direktkandidat_partei_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2062 (class 2606 OID 16504)
+-- Dependencies: 2030 163 174 2077
+-- Name: Direktkandidat_partei_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Direktkandidat"
@@ -1187,7 +1473,9 @@ ALTER TABLE ONLY "Direktkandidat"
 
 
 --
--- Name: Direktkandidat_wahlkreis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2063 (class 2606 OID 16509)
+-- Dependencies: 178 163 2034 2077
+-- Name: Direktkandidat_wahlkreis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Direktkandidat"
@@ -1195,7 +1483,9 @@ ALTER TABLE ONLY "Direktkandidat"
 
 
 --
--- Name: Erststimme_direktkandidat_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2064 (class 2606 OID 16514)
+-- Dependencies: 2016 165 163 2077
+-- Name: Erststimme_direktkandidat_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Erststimme"
@@ -1203,7 +1493,9 @@ ALTER TABLE ONLY "Erststimme"
 
 
 --
--- Name: Erststimme_wahlbezirk_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2065 (class 2606 OID 16519)
+-- Dependencies: 165 2032 176 2077
+-- Name: Erststimme_wahlbezirk_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Erststimme"
@@ -1211,7 +1503,9 @@ ALTER TABLE ONLY "Erststimme"
 
 
 --
--- Name: Land_jahr_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2066 (class 2606 OID 16524)
+-- Dependencies: 167 2020 168 2077
+-- Name: Land_jahr_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Land"
@@ -1219,7 +1513,9 @@ ALTER TABLE ONLY "Land"
 
 
 --
--- Name: Landeskandidat_landesliste_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2067 (class 2606 OID 16529)
+-- Dependencies: 2026 170 172 2077
+-- Name: Landeskandidat_landesliste_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Landeskandidat"
@@ -1227,7 +1523,9 @@ ALTER TABLE ONLY "Landeskandidat"
 
 
 --
--- Name: Landesliste_land_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2068 (class 2606 OID 16534)
+-- Dependencies: 2022 172 168 2077
+-- Name: Landesliste_land_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Landesliste"
@@ -1235,7 +1533,9 @@ ALTER TABLE ONLY "Landesliste"
 
 
 --
--- Name: Landesliste_partei_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2069 (class 2606 OID 16539)
+-- Dependencies: 2030 172 174 2077
+-- Name: Landesliste_partei_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Landesliste"
@@ -1243,7 +1543,9 @@ ALTER TABLE ONLY "Landesliste"
 
 
 --
--- Name: Wahlbezirk_wahlkreis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2070 (class 2606 OID 16544)
+-- Dependencies: 2034 176 178 2077
+-- Name: Wahlbezirk_wahlkreis_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Wahlbezirk"
@@ -1251,7 +1553,9 @@ ALTER TABLE ONLY "Wahlbezirk"
 
 
 --
--- Name: Wahlkreis_land_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2071 (class 2606 OID 16549)
+-- Dependencies: 2022 178 168 2077
+-- Name: Wahlkreis_land_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Wahlkreis"
@@ -1259,7 +1563,9 @@ ALTER TABLE ONLY "Wahlkreis"
 
 
 --
--- Name: Zweitstimme_landesliste_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2072 (class 2606 OID 16554)
+-- Dependencies: 180 172 2026 2077
+-- Name: Zweitstimme_landesliste_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Zweitstimme"
@@ -1267,7 +1573,9 @@ ALTER TABLE ONLY "Zweitstimme"
 
 
 --
--- Name: Zweitstimme_wahlbezirk_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2073 (class 2606 OID 16559)
+-- Dependencies: 180 176 2032 2077
+-- Name: Zweitstimme_wahlbezirk_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY "Zweitstimme"
@@ -1277,7 +1585,9 @@ ALTER TABLE ONLY "Zweitstimme"
 SET search_path = raw2009, pg_catalog;
 
 --
--- Name: listenplaetze_Kandidat_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: alexx
+-- TOC entry 2074 (class 2606 OID 16564)
+-- Dependencies: 2042 184 183 2077
+-- Name: listenplaetze_Kandidat_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: -
 --
 
 ALTER TABLE ONLY listenplaetze
@@ -1285,7 +1595,9 @@ ALTER TABLE ONLY listenplaetze
 
 
 --
--- Name: listenplaetze_Landesliste_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: alexx
+-- TOC entry 2075 (class 2606 OID 16569)
+-- Dependencies: 2038 183 182 2077
+-- Name: listenplaetze_Landesliste_fkey; Type: FK CONSTRAINT; Schema: raw2009; Owner: -
 --
 
 ALTER TABLE ONLY listenplaetze
@@ -1293,7 +1605,9 @@ ALTER TABLE ONLY listenplaetze
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- TOC entry 2082 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
@@ -1301,6 +1615,8 @@ REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
+
+-- Completed on 2012-11-11 14:56:27 CET
 
 --
 -- PostgreSQL database dump complete
