@@ -20,7 +20,7 @@ namespace CsvToDBConverter
 
             var connector = new PostgresqlConnector("minitux.dyndns.org","5432", "siggi", "siggi", "btw2009");
 
-
+            /*
             ImportErststimmen(connector,"C:\\Users\\Siegfried\\Desktop\\erststimmen" +
                                                     ".csv");
 
@@ -28,7 +28,8 @@ namespace CsvToDBConverter
                                                     ".csv");
 
             ImportStimmenFromCsvFile("C:\\Users\\Siegfried\\Desktop\\stimmen.csv", "C:\\Users\\Siegfried\\Desktop\\stimmenFertig.csv");
-        }
+             */
+           }
 
 
         static void ImportStimmenFromCsvFile(string readFile, string writeFile)
