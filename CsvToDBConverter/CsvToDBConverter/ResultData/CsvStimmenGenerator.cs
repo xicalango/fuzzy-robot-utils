@@ -58,13 +58,13 @@ namespace CsvToDBConverter.ResultData
         private StringBuilder GetCsvLine(StimmeRaw s)
         {
             StringBuilder entry = new StringBuilder();
-            if (s.HatGewaehltId == -1)
+            if (s.HatGewaehlt == -1)
             {
                 entry.Append(s.WahlkreisId + ";" + "\n");
             }
             else
             {
-                entry.Append(s.WahlkreisId + ";" + s.HatGewaehltId + "\n");
+                entry.Append(s.WahlkreisId + ";" + s.HatGewaehlt + "\n");
             }
             return entry;
         }

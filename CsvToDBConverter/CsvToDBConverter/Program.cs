@@ -26,6 +26,20 @@ namespace CsvToDBConverter
 
             ImportZweitstimmen(connector, "C:\\Users\\Siegfried\\Desktop\\zweitstimmen" +
                                                     ".csv");
+
+            ImportStimmenFromCsvFile("C:\\Users\\Siegfried\\Desktop\\stimmen.csv", "C:\\Users\\Siegfried\\Desktop\\stimmenFertig.csv");
+        }
+
+
+        static void ImportStimmenFromCsvFile(string readFile, string writeFile)
+        {
+            Console.WriteLine("Beginne mit der Stimmgenerierung...");
+            var dataHandler = new CsvDataHandler(';', true);
+            var erststimmenRaw = dataHandler.ReadFromCsv<StimmeRaw>(readFile);
+            
+            var generator = new CsvStimmenGenerator(100000);
+            generator.CreateCsvFile(erststimmenRaw, writeFile);
+            Console.WriteLine("\nStimmen generiert...");
         }
 
 

@@ -3,42 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LINQtoCSV;
 
 namespace CsvToDBConverter.RawData
 {
     class StimmeRaw
     {
 
+        [CsvColumn(Name = "hatGewaehlt", FieldIndex = 1)]
+        public int HatGewaehlt { get; set; }
 
-        private readonly int _hatGewaehltId;
-        private readonly int _wahlkreisId;
-        private readonly int _stimmen;
+        [CsvColumn(Name = "wahlkreisId", FieldIndex = 2)]
+        public int WahlkreisId { get; set; }
+
+        [CsvColumn(Name = "stimmen", FieldIndex = 3)]
+        public int Stimmen { get; set; }
 
 
+        public StimmeRaw(){}
 
-
-        public StimmeRaw (int hatGewaehltId, int wahlkreisId, int stimmen)
+        public StimmeRaw (int hatGewaehlt, int wahlkreisId, int stimmen)
         {
-            _hatGewaehltId = hatGewaehltId;
-            _wahlkreisId = wahlkreisId;
-            _stimmen = stimmen;
+            this.HatGewaehlt = hatGewaehlt;
+            this.WahlkreisId = wahlkreisId;
+            this.Stimmen = stimmen;
         }
 
+
+        
+        
+
+        
        
-
-        public int Stimmen
-        {
-            get { return _stimmen; }
-        }
-
-        public int HatGewaehltId
-        {
-            get { return _hatGewaehltId; }
-        }
-
-        public int WahlkreisId
-        {
-            get { return _wahlkreisId; }
-        }
     }
 }

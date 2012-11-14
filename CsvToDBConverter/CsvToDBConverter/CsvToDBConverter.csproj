@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="CsvLib\CsvDataHandler.cs" />
     <Compile Include="RawData\StimmeRaw.cs" />
-    <Compile Include="ResultData\Zweitstimme.cs" />
     <Compile Include="Database\PostgresqlConnector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

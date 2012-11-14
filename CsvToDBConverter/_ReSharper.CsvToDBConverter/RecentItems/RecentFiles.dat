@@ -1,18 +1,16 @@
 ﻿<RecentFiles>
   <RecentFiles>
-    <File id="D96343C9-903B-4190-A142-667179404921/d:ResultData/f:Zweitstimme.cs" caret="38" fromTop="2" />
     <File id="D96343C9-903B-4190-A142-667179404921/d:Database/f:PostgresqlConnector.cs" caret="0" fromTop="0" />
-    <File id="D96343C9-903B-4190-A142-667179404921/d:RawData/f:StimmeRaw.cs" caret="230" fromTop="9" />
-    <File id="D96343C9-903B-4190-A142-667179404921/d:CsvLib/f:CsvDataHandler.cs" caret="0" fromTop="0" />
-    <File id="D96343C9-903B-4190-A142-667179404921/f:Program.cs" caret="2034" fromTop="0" />
-    <File id="D96343C9-903B-4190-A142-667179404921/d:ResultData/f:CsvStimmenGenerator.cs" caret="583" fromTop="7" />
+    <File id="D96343C9-903B-4190-A142-667179404921/d:ResultData/f:CsvStimmenGenerator.cs" caret="699" fromTop="11" />
+    <File id="D96343C9-903B-4190-A142-667179404921/d:CsvLib/f:CsvDataHandler.cs" caret="1118" fromTop="26" />
+    <File id="D96343C9-903B-4190-A142-667179404921/d:RawData/f:StimmeRaw.cs" caret="452" fromTop="10" />
+    <File id="D96343C9-903B-4190-A142-667179404921/f:Program.cs" caret="1514" fromTop="15" />
   </RecentFiles>
   <RecentEdits>
     <File id="D96343C9-903B-4190-A142-667179404921/d:CsvLib/f:CsvDataHandler.cs" caret="1402" fromTop="33" />
     <File id="D96343C9-903B-4190-A142-667179404921/d:Database/f:PostgresqlConnector.cs" caret="1136" fromTop="29" />
-    <File id="D96343C9-903B-4190-A142-667179404921/d:ResultData/f:Zweitstimme.cs" caret="38" fromTop="2" />
-    <File id="D96343C9-903B-4190-A142-667179404921/d:RawData/f:StimmeRaw.cs" caret="230" fromTop="9" />
-    <File id="D96343C9-903B-4190-A142-667179404921/f:Program.cs" caret="791" fromTop="9" />
     <File id="D96343C9-903B-4190-A142-667179404921/d:ResultData/f:CsvStimmenGenerator.cs" caret="583" fromTop="7" />
+    <File id="D96343C9-903B-4190-A142-667179404921/d:RawData/f:StimmeRaw.cs" caret="452" fromTop="10" />
+    <File id="D96343C9-903B-4190-A142-667179404921/f:Program.cs" caret="1514" fromTop="15" />
   </RecentEdits>
 </RecentFiles>
