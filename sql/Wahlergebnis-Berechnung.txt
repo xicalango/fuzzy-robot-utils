@@ -1,0 +1,33 @@
+﻿“Algorithmus” zur Berechung des Wahlergebnisses
+
+
+1. Auswertung der Zweitstimmen
+1. Parteien, die weniger als 5% der Gesamtstimmen erreicht haben und die gleichzeitig weniger als drei Wahlkreise über die Erststimme gewonnen haben, werden im Folgenden nicht berücksichtigt
+2. → Assoziationstabelle zweitstimmen_assoziation 
+3. View prozent_partei 
+4. Wende das Saine-Lagune/Scherper Verfahren für die restlichen Parteien an
+1. Erstelle dabei eine Tabelle scherper_auswertung (ParteiId, Gewicht). Diese Tabelle enthält 598 Einträge für jede Partei. Dabei werden die erhaltenen Stimmen nach dem Saine-Lagune/Scherper Verfahren auf eine bestimmte Weise multipliziert (Multiplikationstabelle scherper_faktoren)
+2. Sortiere die Tabelle scherper_auswertung absteigend nach Gewicht. 
+1. Als Ausgabe wird nun folgende Tabelle sitze_pro_partei erstellt: (ParteiId, Sitze) → generiert aus der (ParteiId, Gewicht) Tabelle, indem die ersten 598 Einträge dieser ausgewertet werden.
+1. Pro Bundesland findet nun die folgende Auswertung statt
+1. Die Sitze für jede Partei sollen in einer Tabelle sitze_partei_bundesland abgespeichert werden (ParteiId, Sitze, BundeslandId), dieser Wert kann über folgende Formel errechnet werden: (GesamtsitzePartei) x (AnzahlWahlkreiseProLand x 2) / GesamtsitzeParlament
+1. Das Ergebnis der Formel soll kaufmännisch auf eine ganze Zahl gerundet werden
+1. Die wahl_gewinner Tabelle (KandidatId, Typ[Direktkandidat, Landeslistenkandidat], Bundesland, Partei) soll mit den direkt gewählten Kandidaten gefüllt werden (jener Direktkandidat, der in einem Wahlkreis die meisten Stimmen gewonnen hat - bei Gleichheit entscheidet das Los)
+2. Pro Bundesland und für jede Partei findet nun die folgende Auswertung statt (in PHP)
+1. Ist die Anzahl an Gewinnern in der Gewinner-Tabelle für das Bundesland größer oder gleich der in sitzeParteiBundesland spezifizierten Anzahl der Sitze
+1. JA: Weiter zu nächster Partei/nächstem Bundesland
+2. NEIN: Ergänze Gewinner-Tabelle, indem die Kandidaten der Landesliste der Partei in der Reihenfolge ihres Auftretens auf der Liste eingefügt werden
+3. ANMERKUNG: Beim Einfügen aus der Landesliste muss geprüft werden, ob der Kandidat bereits durch ein Direktmandat Einzug in den Bundestag gehalten hat. Dies stellt ein Problem dar, da die Ids nicht eindeutig bezüglich der Kandidatetypen sind. Es muss also wohl auf Name geprüft werden.
+1. Folgender Pseudo-Code kann für Punkt 4 angegeben werden:
+
+
+
+
+Algorithmus zur Befüllung der wahl_gewinner Tabelle mit Landeslistenkandidaten:
+Für jedes Bundesland bland:
+inserted = 1;
+Für jede Partei p:
+while(select count(kandidat_id) from wahl_gewinner where land_id = bland.id and partei_id = p.id) < (select sitze from sitze_partei_bundesland where land_id = bland.id and partei_id=p.id)):
+    insert into wahl_gewinner(
+    select k.id, "Landeslistenkandidat", l.id, p.id from landeskandidat k, landesliste ll, land l, partei p where k.landesliste_id = ll.id and ll.partei_id = p.id, and ll.land_id = l.id and k.listenrang = inserted);    
+    inserted++;
