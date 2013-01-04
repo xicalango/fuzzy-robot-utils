@@ -47,13 +47,10 @@ public class Terminal implements Runnable {
 					long startTime = System.currentTimeMillis();
 					HttpResponse response = client.execute(request);
 					
-					
-					// --- Is this code neccessary? Is execute lazy?
 					InputStream instream = response.getEntity().getContent();
 					BufferedReader r = new BufferedReader(new InputStreamReader(instream));
-					while((r.readLine())!= null) ;
-					// ---
-					
+					while(r.readLine()!= null) ;
+					//System.out.println(r.readLine());
 					timeNeeded += System.currentTimeMillis() - startTime;
 				}
 

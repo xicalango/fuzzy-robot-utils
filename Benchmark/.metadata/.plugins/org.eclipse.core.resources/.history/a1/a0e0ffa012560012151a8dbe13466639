@@ -9,11 +9,9 @@ public class Test {
 
 		ArrayList<URL_Freq> l = new ArrayList<URL_Freq>();
 
-		
 		ArrayList<String> q1 = new ArrayList<String>();
 		q1.add("http://www.gamestar.de");
 		l.add(new URL_Freq(new UrlInfo(q1), 50));
-
 
 		ArrayList<String> q2 = new ArrayList<String>();
 		q2.add("http://www.leereseite.com/");
