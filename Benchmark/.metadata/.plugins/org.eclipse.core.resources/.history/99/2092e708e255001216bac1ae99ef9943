@@ -1,0 +1,37 @@
+import java.util.List;
+
+
+public class UrlInfo {
+
+	
+	private List<String> urls;
+		
+	
+	public UrlInfo(List<String> urls){
+		this.urls = urls;
+	}
+
+	public String toString(){
+		String s = "";
+		for(String u : this.urls){
+			s += u + "\n";
+		}
+		
+		return s;
+	}
+
+	public List<String> getUrls() {
+		return urls;
+	}
+	
+	public boolean equals(Object o){
+		if(o instanceof UrlInfo){
+			UrlInfo info = (UrlInfo) o;
+			if(info.getUrls().equals(this.getUrls())) return true;
+		}
+		return false;
+	}
+	
+	
+	
+}

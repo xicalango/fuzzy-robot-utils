@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class TerminalStatistic {
+	
+	AccessTimeContainer accessTimes;
+	
+	
+	public TerminalStatistic(){
+		this.accessTimes = new AccessTimeContainer();
+	}
+	
+	
+	public void addEntry(UrlInfo i, double timeNeeded){
+		this.accessTimes.addAccessTime(i, timeNeeded);
+	}
+	
+	public double getMeanTime(UrlInfo info){
+		int sum = 0;
+		int measures = 0;
+		for(Double i : accessTimes.getAccessTime(info).getAccessTime()){
+			sum += i;
+			measures++;
+		}
+		return sum/measures;
+	}
+
+}

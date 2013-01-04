@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+
+
+public class test {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		ArrayList<URL_Freq> l = new ArrayList<URL_Freq>();
+		
+		l.add(new URL_Freq(new UrlInfo("test1"), 20));
+		l.add(new URL_Freq(new UrlInfo("test2"), 20));
+		l.add(new URL_Freq(new UrlInfo("test3"), 20));
+		l.add(new URL_Freq(new UrlInfo("test4"), 30));
+		l.add(new URL_Freq(new UrlInfo("test5"), 10));
+		
+		CardDeck d = new CardDeck(l);
+		d.printUnusedCards();
+		
+		while(true){
+		System.out.println("Next Card:");
+		System.out.println(d.getNextCard());
+		}
+	}
+
+}

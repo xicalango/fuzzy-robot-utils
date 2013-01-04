@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class CardDeck {
+
+	//List<URL_Freq> urlList;	
+	private List<UrlInfo> unusedCards;
+	private List<UrlInfo> usedCards;
+	
+	public CardDeck(List<URL_Freq> urlList){
+		this.usedCards = new ArrayList<UrlInfo>();
+		
+		//check, if we can downscale the number of cards 
+		boolean downscale = true;
+		for(URL_Freq f : urlList){
+			if (f.getFreq() % 10 != 0 ){ 
+				downscale = false;
+				break;
+				}
+		}
+		
+		//Scale down the number of cards, if possible
+		if(downscale){
+			for(URL_Freq f : urlList){
+				f.setFreq(f.getFreq()/10);
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+}

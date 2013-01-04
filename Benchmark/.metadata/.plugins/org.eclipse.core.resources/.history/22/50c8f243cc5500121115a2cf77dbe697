@@ -1,0 +1,18 @@
+
+public class Timeout {
+
+	
+	private double min;
+	private double max;
+	
+	public Timeout(double t){
+		this.min = t * 0.8;
+		this.max = t * 1.2;
+	}
+	
+	public double getTimeout(){
+		return this.min + (Math.random() * (this.max - this.min));
+	}
+	
+	
+}

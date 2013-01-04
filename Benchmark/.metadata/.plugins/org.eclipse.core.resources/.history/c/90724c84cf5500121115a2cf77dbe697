@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class UrlAccessTimes {
+	
+	private UrlInfo url;
+	private List<Double> accessTime;
+	
+	public UrlInfo getUrl() {
+		return url;
+	}
+
+	public List<Double> getAccessTime() {
+		return accessTime;
+	}
+	
+	public UrlAccessTimes(UrlInfo url){
+		this.url = url;
+		this.accessTime = new ArrayList<Double>();
+	}
+
+	public void addAccessTime(double accessTime){
+		this.accessTime.add(accessTime);
+	}
+	
+	
+
+}

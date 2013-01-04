@@ -1,0 +1,29 @@
+import java.util.List;
+
+
+public class UrlInfo {
+
+	
+	private List<String> urls;
+		
+	
+	public UrlInfo(List<String> urls){
+		this.urls = urls;
+	}
+
+	public String toString(){
+		String s = "";
+		for(String u : this.urls){
+			s += u + "\n";
+		}
+		
+		return s;
+	}
+
+	public List<String> getUrls() {
+		return urls;
+	}
+	
+	
+	
+}

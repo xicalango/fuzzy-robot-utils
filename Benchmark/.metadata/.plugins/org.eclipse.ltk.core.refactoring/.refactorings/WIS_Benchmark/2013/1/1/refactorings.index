@@ -1,0 +1,11 @@
+1357224091088	Delete element
+1357224230913	Encapsulate field 'url'
+1357228517752	Encapsulate field 'urlList'
+1357229145246	Rename field 'started'
+1357229375004	Rename type 'UrlTime'
+1357229470447	Rename type 'UrlTimestamps'
+1357229497878	Rename type 'UrlAccessTimeStamps'
+1357229509428	Rename type 'UrlAccessTime'
+1357230506703	Rename method 'getAccesTime'
+1357231545572	Delete element
+1357243923801	Rename type 'test'

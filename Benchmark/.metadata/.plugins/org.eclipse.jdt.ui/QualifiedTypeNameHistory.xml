@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="org.apache.http.message.BasicHttpRequest"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpRequest"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpVersion"/>
+<fullyQualifiedTypeName name="org.apache.http.client.HttpClient"/>
+<fullyQualifiedTypeName name="org.apache.http.impl.client.DefaultHttpClient"/>
+<fullyQualifiedTypeName name="org.apache.http.client.methods.HttpGet"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpResponse"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpEntity"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+
+
+public class test {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		ArrayList<URL_Freq> l = new ArrayList<URL_Freq>();
+		
+		l.add(new URL_Freq(new UrlInfo("http://www.google.de"), 50));
+		l.add(new URL_Freq(new UrlInfo("http://www.gamestar.de"), 50));
+		
+		CardDeck d = new CardDeck(new WorkloadMix(l));
+		//d.printUnusedCards();
+		
+		Thread t = new Thread(new Terminal(d, new Timeout(2), 5));
+		t.start();
+	}
+
+}

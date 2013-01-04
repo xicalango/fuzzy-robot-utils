@@ -1,0 +1,26 @@
+import java.util.ArrayList;
+
+
+public class test {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		ArrayList<URL_Freq> l = new ArrayList<URL_Freq>();		
+		l.add(new URL_Freq(new UrlInfo("http://www.gamestar.de"), 50));
+		l.add(new URL_Freq(new UrlInfo("http://www.google.de"), 50));
+		
+		Benchmark b = new Benchmark(new WorkloadMix(l), 3, new Timeout(1), 100);
+		try {
+			b.startBenchmark();
+			System.out.println(b.getStatistics());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
+

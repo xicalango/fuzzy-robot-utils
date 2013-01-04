@@ -1,0 +1,56 @@
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+public class Terminal implements Runnable {
+
+	private CardDeck d;
+	private Timeout t;
+	private boolean isRunning = false;
+	private TerminalStatistic statistic;
+	public TerminalStatistic getStatistic() {
+		return statistic;
+	}
+
+	private int measurements;
+
+	public Terminal(CardDeck d, Timeout t, int measurements) {
+		this.d = d;
+		this.t = t;
+		this.statistic = new TerminalStatistic();
+		this.measurements = measurements;
+		this.isRunning = true;
+	}
+
+	@Override
+	public void run() {
+		int measurementCount = 0;
+		while (this.isRunning && measurementCount < this.measurements ) {
+			measurementCount++;
+			try {				
+				UrlInfo nextUrl = this.d.getNextCard();
+				
+				HttpClient client = new DefaultHttpClient();
+				HttpGet request = new HttpGet(nextUrl.getUrl());
+				
+				long startTime = System.currentTimeMillis();
+				
+				HttpResponse response = client.execute(request);
+				//response.getEntity().getContent();
+
+				long timeNeeded = System.currentTimeMillis() - startTime;
+				
+				this.statistic.addEntry(nextUrl, (double)timeNeeded);
+								
+				System.out.println("Fired execution " + measurementCount);
+				
+				Thread.sleep(this.t.getTimeout());
+				
+				
+			} catch (Exception e) {
+
+			}
+		}
+	}
+}

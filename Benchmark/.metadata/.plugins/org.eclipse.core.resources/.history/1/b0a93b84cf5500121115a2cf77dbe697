@@ -1,0 +1,18 @@
+
+public class Benchmark {
+
+	private WorkloadMix wm;
+	private int terminals;
+	private Timeout t;
+	
+	public Benchmark(WorkloadMix wm, int terminals, Timeout t){
+		this.wm = wm;
+		this.terminals = terminals;
+		this.t=t;
+	}
+	
+	public void startBenchmark(){
+		
+	}
+	
+}

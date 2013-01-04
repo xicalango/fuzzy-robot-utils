@@ -1,0 +1,13 @@
+import java.util.List;
+
+
+public class UrlAccessTimes {
+	
+	private UrlInfo url;
+	private List<Integer> accessTime;
+	
+	public UrlAccessTimes(){
+		
+	}
+
+}
