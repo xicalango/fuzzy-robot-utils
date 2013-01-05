@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class AccessTimeContainer {
+public class AccessTimeContainer implements Iterable<UrlAccessTimes> {
 
-	List<UrlAccessTimes> accessTimes;
+	private List<UrlAccessTimes> accessTimes;
 
 	public AccessTimeContainer() {
 		this.accessTimes = new ArrayList<UrlAccessTimes>();
@@ -41,6 +42,11 @@ public class AccessTimeContainer {
 
 	public int size() {
 		return this.accessTimes.size();
+	}
+
+	@Override
+	public Iterator<UrlAccessTimes> iterator() {
+		return accessTimes.iterator();
 	}
 
 }
