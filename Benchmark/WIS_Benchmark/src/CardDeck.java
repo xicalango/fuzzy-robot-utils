@@ -48,14 +48,14 @@ public class CardDeck {
 				this.unusedCards.add(i);
 			}
 			this.usedCards.clear();
-			System.out.println("TTT");
+			Output.stream().println("TTT");
 			return this.getNextCard();
 		}
 	}
 
 	public void printUnusedCards() {
 		for (UrlInfo c : this.unusedCards) {
-			System.out.println(c);
+			Output.stream().println(c);
 		}
 	}
 
