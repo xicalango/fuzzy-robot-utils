@@ -59,7 +59,7 @@ public class Terminal implements Runnable {
 
 				this.statistic.addEntry(nextUrl, (double) timeNeeded);
 
-				Output.stream().println("Fired execution " + measurementCount);
+				Output.stream().println("Fired execution " + measurementCount +" ("+ nextUrl.getName() +")");
 
 				Thread.sleep(this.t.getTimeout());
 
