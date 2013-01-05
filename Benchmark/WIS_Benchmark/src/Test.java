@@ -58,6 +58,9 @@ public class Test {
 				new URL_Freq(new UrlInfo("q6",q6), 10)
 				);
 		
+		//Nächste zeile auskommentieren um (vollständige) Ausgabe in Datei umzuleiten
+		//Output.INSTANCE.setOutputToFile("output.txt")
+		
 		Benchmark b = new Benchmark(new WorkloadMix(l), 5, new Timeout(1), 10);
 		
 		try {
