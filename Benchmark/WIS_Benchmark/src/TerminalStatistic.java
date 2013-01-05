@@ -1,7 +1,7 @@
 
 public class TerminalStatistic {
 
-	AccessTimeContainer accessTimes;
+	private AccessTimeContainer accessTimes;
 
 	public TerminalStatistic() {
 		this.accessTimes = new AccessTimeContainer();
@@ -29,5 +29,11 @@ public class TerminalStatistic {
 		}
 		return s;
 	}
+
+	public AccessTimeContainer getAccessTimes() {
+		return accessTimes;
+	}
+	
+	 
 
 }

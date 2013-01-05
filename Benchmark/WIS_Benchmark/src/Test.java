@@ -63,6 +63,7 @@ public class Test {
 		try {
 			b.startBenchmark();
 			Output.stream().println(b.getStatistics());
+			Output.stream().println(b.getAggregatedStatistics());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
