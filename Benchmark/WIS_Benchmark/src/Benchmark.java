@@ -75,7 +75,7 @@ public class Benchmark {
 			
 			double avgTime = sumTime / times.size();
 			
-			sb.append(urlInfo + "Executions: "+ times.size() +"\nSum time: " + sumTime +"\nAvg time: " + avgTime+"\n");
+			sb.append(urlInfo + ":\n Executions: "+ times.size() +"\nSum time: " + sumTime +"\nAvg time: " + avgTime+"\n");
 		}
 		
 		return sb.toString();

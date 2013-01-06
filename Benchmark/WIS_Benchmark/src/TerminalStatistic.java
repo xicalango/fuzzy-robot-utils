@@ -25,7 +25,7 @@ public class TerminalStatistic {
 		String s = "";
 		for (int i = 0; i < this.accessTimes.size(); i++) {
 			UrlInfo info = this.accessTimes.get(i).getUrl();
-			s += info.toString() + "--> " + this.getMeanTime(info) + " ms\n";
+			s += info.toString() + " Avg: " + this.getMeanTime(info) + " ms\n";
 		}
 		return s;
 	}

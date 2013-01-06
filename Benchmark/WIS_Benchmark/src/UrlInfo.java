@@ -16,7 +16,11 @@ public class UrlInfo {
 
 
 	public String toString() {
-		String s = name+":\n";
+		if(name.length() > 0) {
+			return name;
+		}
+
+		String s = "";
 		for (String u : this.urls) {
 			s += u + "\n";
 		}
