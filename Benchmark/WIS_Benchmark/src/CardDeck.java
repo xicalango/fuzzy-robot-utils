@@ -7,30 +7,19 @@ public class CardDeck {
 	// List<URL_Freq> urlList;
 	private List<UrlInfo> unusedCards;
 	private List<UrlInfo> usedCards;
+	private WorkloadMix wlm;
 
 	public CardDeck(WorkloadMix wlm) {
 		this.unusedCards = new ArrayList<UrlInfo>();
 		this.usedCards = new ArrayList<UrlInfo>();
+		this.wlm = wlm;
 
-		// check, if we can downscale the number of cards
-		boolean downscale = true;
+		// First get the minimal nuber of cards in a deck
+		int minimalNumber = this.getMinimalNumberOfCards();
+	
+		// Now set the cards by adding required cards to the unusedCards deck
 		for (URL_Freq f : wlm.getUrlList()) {
-			if (f.getFreq() % 10 != 0) {
-				downscale = false;
-				break;
-			}
-		}
-
-		// Scale down the number of cards, if possible
-		if (downscale) {
-			for (URL_Freq f : wlm.getUrlList()) {
-				f.setFreq(f.getFreq() / 10);
-			}
-		}
-
-		// Now set the cards by adding freq cards to the unusedCards deck
-		for (URL_Freq f : wlm.getUrlList()) {
-			for (int i = 0; i < f.getFreq(); i++) {
+			for (int i = 0; i < (f.getFreq() * minimalNumber) / 100; i++) {
 				this.unusedCards.add(f.getUrl());
 			}
 		}
@@ -57,6 +46,24 @@ public class CardDeck {
 		for (UrlInfo c : this.unusedCards) {
 			Output.stream().println(c);
 		}
+	}
+
+	
+	private int getMinimalNumberOfCards() {
+		boolean downscale;
+		int i;
+		for (i = 1; i < 100; i++) {
+			downscale = true;
+			for (URL_Freq f : this.wlm.getUrlList()) {
+				if ((i * f.getFreq()) % 100 != 0) {
+					downscale = false;
+					break;
+				}
+			}
+			if (downscale)
+				break;
+		}
+		return i;
 	}
 
 }
