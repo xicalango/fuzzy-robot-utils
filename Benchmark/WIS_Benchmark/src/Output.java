@@ -41,4 +41,5 @@ public enum Output {
 		return INSTANCE.output;
 	}
 
+
 }

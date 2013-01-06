@@ -48,7 +48,7 @@ public class Terminal implements Runnable {
 					HttpResponse response = client.execute(request);
 					
 					
-					// --- Is this code neccessary? Is execute lazy?
+					// --- Is this code neccessary? Is execute lazy? Yes it is
 					InputStream instream = response.getEntity().getContent();
 					BufferedReader r = new BufferedReader(new InputStreamReader(instream));
 					while((r.readLine())!= null) ;
@@ -59,7 +59,7 @@ public class Terminal implements Runnable {
 
 				this.statistic.addEntry(nextUrl, (double) timeNeeded);
 
-				Output.stream().println("Fired execution " + measurementCount +" ("+ nextUrl.getName() +")");
+				System.out.println("Fired execution " + measurementCount +" ("+ nextUrl.getName() +")");
 
 				Thread.sleep(this.t.getTimeout());
 

@@ -31,10 +31,10 @@ public class Benchmark {
 			t.start();
 			this.threadList.add(t);
 		}
-		Output.stream().println("Benchmarks started\n");
+		System.out.println("Benchmarks started\n");
 		for (Thread t : this.threadList)
 			t.join();
-		Output.stream().println("Benchmarks finished\n\n");
+		System.out.println("Benchmarks finished\n\n");
 	}
 
 	public String getStatistics() {
