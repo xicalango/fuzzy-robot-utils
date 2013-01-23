@@ -1,0 +1,62 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import domain.District;
+import domain.FederalState;
+
+public class AdminWindow extends JFrame implements ListSelectionListener{
+
+	private List<District> districts;
+	private List<FederalState> federalStates;
+	private FederalState choosenState;
+	private JList<District> districtList;
+	
+	public AdminWindow(List<District> districts, List<FederalState> federalStates) {
+		this.districts = districts;
+		this.federalStates = federalStates;
+		this.setLayout(new BorderLayout());
+				
+		JList<FederalState> stateList = new JList<FederalState> (new Vector<FederalState>(this.federalStates));		
+		stateList.addListSelectionListener(this);
+		JScrollPane federalStateScrollPane = new JScrollPane(stateList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
+		this.add(federalStateScrollPane, BorderLayout.WEST);
+				
+		districtList = new JList<District> (new Vector<District>(this.districts));		
+		JScrollPane districtScrollPane = new JScrollPane(districtList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
+		this.add(districtScrollPane, BorderLayout.EAST);
+		
+		this.pack();
+		this.setVisible(true);		
+	}
+	
+	private void setDistricts(){		
+		if(this.choosenState == null) return;		
+		Vector <District> listDistricts = new Vector<District>();		
+		for(District d : this.districts){
+			if(d.getfState().equals(this.choosenState)){
+				listDistricts.add(d);
+			}
+		}
+		this.districtList.setListData(listDistricts);
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		System.out.println("TEST");
+		
+	}
+	
+	
+	
+}

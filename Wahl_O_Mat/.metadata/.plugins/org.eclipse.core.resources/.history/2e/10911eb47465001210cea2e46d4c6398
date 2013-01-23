@@ -1,0 +1,24 @@
+package gui;
+
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+import domain.District;
+
+public class AdminPanel extends JPanel {
+
+	private Vector<District> districts;
+	
+	public AdminPanel(Vector<District> districts){
+		this.districts = districts;
+		
+		JList<District> list = new JList<District> (this.districts);		
+		
+	}
+	
+	
+	
+}

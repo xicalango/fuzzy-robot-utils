@@ -1,0 +1,199 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.SQLException;
+import java.util.UUID;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JWindow;
+import javax.swing.KeyStroke;
+
+import persistence.IDataHandler;
+
+import domain.BallotCard;
+
+public class VoteFrame extends JFrame implements ActionListener {
+
+	
+	private JPanel loginPanel;
+	private BallotCardPanel ballotCardPanel;
+	private JButton loginButton;
+	private JTextField loginTextField;
+	private JLabel loginInfoLabel;
+	private IDataHandler handler;
+	private int loginCounter;
+	private JLabel infoLabel;
+	
+	public VoteFrame(BallotCard bCard, IDataHandler handler){
+		super();
+		this.handler = handler;
+		this.loginCounter = 0;
+		this.setLoginPanel();
+		
+		this.ballotCardPanel = new BallotCardPanel(bCard);
+				
+		//Set FullScreen
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device;		
+		device = ge.getDefaultScreenDevice();		
+		device.setFullScreenWindow(this);		
+				
+		//Do Key Bindings
+		Action exitAction = new AbstractAction( "Ende" ) {
+			  @Override public void actionPerformed( ActionEvent e ) {
+			    System.exit( 0 );
+			  }
+			};		
+			
+		JPanel content = (JPanel) this.getContentPane();
+		InputMap inputMap = content.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(KeyStroke.getKeyStroke("F2"), "ENDE");
+		
+		ActionMap actionMap = content.getActionMap();
+		actionMap.put("ENDE", exitAction);			
+		
+		JPanel infoPanel = new JPanel();
+		infoLabel = new JLabel("Willkommen bei der Bundestagswahl 2009 im Wahlkreis " + this.ballotCardPanel.getBallotCard().getDistrict());
+		infoLabel.setFont(new Font("Arial", Font.ITALIC, 30));
+		infoPanel.add(infoLabel);
+				
+		JPanel centerPanel = new JPanel();
+		centerPanel.setPreferredSize(new Dimension(1, 400));
+		
+		this.setLayout(new FlowLayout());
+		this.add(infoPanel);
+		this.add(centerPanel);		
+		this.add(loginPanel);
+		
+		
+	    this.setResizable(false);		
+		this.setVisible(true);		
+	}
+	
+	
+	private void setVotePanel(){
+		
+	}
+	
+	private void setIllegalHandlingPanel(){
+		this.removeLoginPanel();
+		this.infoLabel.setText("Bitte Admin rufen...");
+		this.repaint();
+	}
+	
+	
+	private void setLoginPanel(){
+		loginButton = new JButton("OK");
+		loginButton.addActionListener(this);
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(loginButton);
+		
+		JLabel loginRequ = new JLabel("Bitte geben Sie das Ihnen zugewiesene Passwort ein:");
+		loginRequ.setFont(new Font("Arial", Font.BOLD, 25));
+		loginTextField = new JTextField();
+		loginTextField.setColumns(25);
+		loginTextField.setFont(new Font("Arial", Font.BOLD, 25));
+		
+		JPanel loginDataPanel = new JPanel();
+		loginDataPanel.setLayout(new FlowLayout());
+		loginDataPanel.add(loginRequ);
+		loginDataPanel.add(loginTextField);
+		
+		this.loginInfoLabel = new JLabel();
+		this.loginInfoLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		this.loginInfoLabel.setForeground(Color.red);
+		
+		loginPanel = new JPanel();
+		loginPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		loginPanel.add(loginDataPanel);
+		loginPanel.add(this.loginInfoLabel);
+		loginPanel.add(buttonPanel);
+		
+		this.add(loginPanel);
+	}
+	
+	private void removeLoginPanel(){
+		this.remove(loginPanel);
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() instanceof JButton){
+			JButton b = (JButton) e.getSource();
+			
+			
+			//Login-Button pressed
+			if(b.equals(this.loginButton)){	
+				try {
+					if(this.loginCounter > 2)
+						this.setIllegalHandlingPanel();
+					
+					this.handler.establishConnection();
+					boolean access = validateLogIn();
+					this.handler.closeConnection();
+					
+					if(access){
+						this.removeLoginPanel();	
+						this.repaint();
+					}
+					else{
+						this.loginCounter++;
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+			//other button pressed...
+			
+		}
+		
+	}
+	
+	private boolean validateLogIn(){
+		try{
+		UUID u = UUID.fromString(this.loginTextField.getText());		
+		return this.handler.access(u);		
+		}
+		catch(IllegalArgumentException e){
+			System.out.println("KEINE VALIDE UUID!!!");
+			return false;
+		}
+		catch(SQLException e){
+			System.out.println("Keine Verbindung zur Datenbank!!!");
+			return false;
+		}		
+	}
+
+	
+	
+	
+
+}

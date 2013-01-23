@@ -1,0 +1,26 @@
+1358875001933	Move file
+1358875014985	Delete element
+1358897035579	Rename local variable 'getDCandByDistrict'
+1358897059869	Rename local variable 'getPartyByID'
+1358897403176	Rename local variable 'getPartyByIDStatement'
+1358897816552	Rename local variable 'getStateByIDStatement'
+1358897828432	Rename method 'getPartys'
+1358898542264	Rename local variable 'id'
+1358954473848	Rename field 'input'
+1358955183577	Rename field 'admin_passwd'
+1358956491833	Rename type 'LoginPanel'
+1358956512837	Rename type 'AdminPanel'
+1358957581114	Rename local variable 'list'
+1358957590635	Rename local variable 'scrollPane'
+1358960884973	Rename field 'url'
+1358960893675	Rename field 'username'
+1358960899605	Rename field 'presetUsername'
+1358960912647	Rename field 'password'
+1358960926519	Rename field 'presetUserName'
+1358960931801	Rename field 'presetUrl'
+1358962701835	Delete element
+1358967792223	Rename local variable 'okButton'
+1358968779778	Rename local variable 'getParyListsByDistrictStatement'
+1358969382541	Rename local variable 'getParyListsByDistrictStatement'
+1358972365024	Rename local variable 'getAllStates'
+1358978605778	Delete element

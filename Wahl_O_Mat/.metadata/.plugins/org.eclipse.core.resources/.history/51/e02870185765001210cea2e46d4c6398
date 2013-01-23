@@ -1,0 +1,71 @@
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import gui.BallotCardPanel;
+import gui.SecondVoteItem;
+
+import javax.swing.JFrame;
+import javax.swing.JRadioButton;
+
+import persistence.DataHandler;
+
+import domain.BallotCard;
+import domain.DCandidate;
+import domain.District;
+import domain.FederalState;
+import domain.LCandidate;
+import domain.Party;
+import domain.PartyList;
+
+
+public class Programm {
+
+	/**
+	 * @param args
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		
+		DataHandler dh = new DataHandler();
+		List<District> d = dh.getDistricts();
+		
+		DataHandler data = new DataHandler();
+		
+		JFrame testFrame = new JFrame();
+		testFrame.setVisible(true);
+		//testFrame.add(new FirstVoteItem(new DCandidate(1, "Siegfried", "Depner", new District(1, "Augsburg-Stadt", new FederalState(1, "Bayern", 2009), 100000), new Party(1,"CDU")), new JRadioButton()));
+		
+		List<LCandidate> l = new ArrayList<LCandidate>();
+		l.add(new LCandidate(1, "Siegfried", "Depner", 1));
+		l.add(new LCandidate(1, "Alexander", "Weld", 2));
+		l.add(new LCandidate(1, "Heinz", "Hornauer", 3));
+		PartyList p1 = new PartyList(1, new Party(1, "CDU"), 1,new FederalState(1, "Bayern", 2009), l);
+		
+		List<PartyList> partyListList = new ArrayList<PartyList>();
+		
+		partyListList.add(p1);
+
+		//int ID, String firstName, String lastName, District district, Party party
+
+		District dist = new District(1, "Augsburg-Stadt",new FederalState(1, "Bayern", 2009), 1);
+		Party party = new Party(1, "CDU");
+		
+		List<DCandidate> d = new ArrayList<DCandidate>();
+		d.add(new DCandidate(1, "Siegfried", "Depner", dist, party));
+		d.add(new DCandidate(1, "Alexander", "Weld", dist, party));
+		d.add(new DCandidate(1, "Heinz", "Hornauer", dist, party));
+		
+		
+		//testFrame.add(new FirstVoteItem(new DCandidate(1, "Siegfried", "Depner", dist, party), new JRadioButton()));
+		
+		
+		//testFrame.add(new SecondVoteItem(new PartyList(1, new Party(1, "CDU"), 1,new FederalState(1, "Bayern", 2009), l), new JRadioButton()));
+		
+		testFrame.add(new BallotCardPanel(new BallotCard(partyListList, d)));
+		testFrame.pack();
+		
+	}
+
+}

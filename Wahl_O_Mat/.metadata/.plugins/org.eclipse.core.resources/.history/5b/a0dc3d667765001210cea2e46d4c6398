@@ -1,0 +1,34 @@
+package gui;
+
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import domain.District;
+
+public class AdminWindow extends JFrame {
+
+	private List<District> districts;
+	
+	public AdminWindow(List<District> districts){
+		this.districts = districts;
+		
+		JList<District> list = new JList<District> (new Vector<District>(this.districts));		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		scrollPane.add(list);
+		
+		this.add(scrollPane);
+		
+		this.pack();
+		this.setVisible(true);
+		
+	}
+	
+	
+	
+}

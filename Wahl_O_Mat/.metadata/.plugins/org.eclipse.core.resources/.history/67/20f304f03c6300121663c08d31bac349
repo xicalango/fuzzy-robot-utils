@@ -1,0 +1,17 @@
+package gui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import domain.BallotCard;
+
+public class VotePanelFabric {
+
+	
+	public static VotePanel getFirstVotePanel(BallotCard bCard){
+
+		List<VoteItem> voteItems = new ArrayList<VoteItem>();
+	}
+	
+	
+}

@@ -1,0 +1,150 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import persistence.IDataHandler;
+
+import domain.BallotCard;
+import domain.DCandidate;
+import domain.District;
+import domain.FederalState;
+import domain.PartyList;
+
+public class AdminWindow extends JFrame implements ListSelectionListener,
+		ActionListener {
+
+	private IDataHandler handler;
+	private List<District> districts;
+	private List<FederalState> federalStates;
+	private FederalState choosenState;
+	private JList<District> districtList;
+	private JList<FederalState> stateList;
+	private JButton okButton;
+
+	public AdminWindow(List<District> districts,
+			List<FederalState> federalStates, IDataHandler handler) {
+		super();
+		this.handler = handler;
+		this.districts = districts;
+		this.federalStates = federalStates;
+
+		JPanel listPanel = new JPanel();
+		listPanel.setLayout(new GridLayout(1, 2));
+
+		stateList = new JList<FederalState>(new Vector<FederalState>(
+				this.federalStates));
+		stateList.setFont(new Font("Arial", Font.BOLD, 21));
+		stateList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		stateList.addListSelectionListener(this);
+		JScrollPane federalStateScrollPane = new JScrollPane(stateList,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listPanel.add(federalStateScrollPane, BorderLayout.WEST);
+
+		districtList = new JList<District>(new Vector<District>(this.districts));
+		districtList.setFont(new Font("Arial", Font.BOLD, 18));
+		districtList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		districtList.addListSelectionListener(this);
+		JScrollPane districtScrollPane = new JScrollPane(districtList,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listPanel.add(districtScrollPane, BorderLayout.EAST);
+
+		JPanel buttonPanel = new JPanel();
+		okButton = new JButton("OK");
+		okButton.setEnabled(false);
+		okButton.addActionListener(this);
+
+		buttonPanel.add(okButton);
+
+		this.setLayout(new BorderLayout());
+
+		this.add(listPanel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
+
+		this.pack();
+		this.setVisible(true);
+	}
+
+	private void setDistricts() {
+		if (this.choosenState == null)
+			return;
+		Vector<District> listDistricts = new Vector<District>();
+		for (District d : this.districts) {
+			if (d.getfState().equals(this.choosenState)) {
+				listDistricts.add(d);
+			}
+		}
+		this.districtList.setListData(listDistricts);
+		this.repaint();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if (this.districtList.getSelectedIndex() != -1) {
+			this.okButton.setEnabled(true);
+		} else {
+			this.okButton.setEnabled(false);
+		}
+
+		if (e.getValueIsAdjusting())
+			return;
+		
+		if(e.getSource() instanceof JList){
+		JList list = (JList) e.getSource();
+		
+		if(list.equals(stateList)){
+		this.choosenState = this.stateList.getSelectedValue();
+		this.setDistricts();
+		}
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() instanceof JButton){
+			JButton sourceButton = (JButton) e.getSource();
+			
+			if(sourceButton.equals(this.okButton)){
+				this.dispose();
+				
+				District d = this.districtList.getSelectedValue();
+				
+				try {
+					this.handler.establishConnection();
+					List<PartyList> pList = handler.getPartyLists(d);
+					List<DCandidate> dcList = handler.getDCandidates(d);
+					this.handler.closeConnection();
+					
+					BallotCard bc = new BallotCard(pList, dcList, d);
+					
+					new VoteFrame(bc, this.handler);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		}
+
+	}
+
+}

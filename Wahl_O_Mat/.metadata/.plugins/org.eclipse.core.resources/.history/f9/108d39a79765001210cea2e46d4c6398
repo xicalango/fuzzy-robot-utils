@@ -1,0 +1,32 @@
+package domain;
+
+
+import java.util.List;
+
+import persistence.IDataHandler;
+
+
+public class BallotCard {
+	
+	private List<PartyList> partyList;
+	private List<DCandidate> dCandidateList;
+	private District district;
+	
+	public List<PartyList> getPartyList() {
+		return partyList;
+	}
+
+	public List<DCandidate> getdCandidateList() {
+		return dCandidateList;
+	}
+	
+	public BallotCard(List<PartyList> partyList, List<DCandidate> dCandidateList, District district){
+		this.partyList = partyList;
+		this.dCandidateList = dCandidateList;
+		this.district = district;
+	}
+	
+	
+	
+	
+}

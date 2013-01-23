@@ -1,0 +1,115 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import domain.District;
+import domain.FederalState;
+
+public class AdminWindow extends JFrame implements ListSelectionListener,
+		ActionListener {
+
+	private List<District> districts;
+	private List<FederalState> federalStates;
+	private FederalState choosenState;
+	private JList<District> districtList;
+	private JList<FederalState> stateList;
+	private JButton okButton;
+
+	public AdminWindow(List<District> districts,
+			List<FederalState> federalStates) {
+		this.districts = districts;
+		this.federalStates = federalStates;
+
+		JPanel listPanel = new JPanel();
+		listPanel.setLayout(new GridLayout(1, 2));
+
+		stateList = new JList<FederalState>(new Vector<FederalState>(
+				this.federalStates));
+		stateList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		stateList.addListSelectionListener(this);
+		JScrollPane federalStateScrollPane = new JScrollPane(stateList,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listPanel.add(federalStateScrollPane, BorderLayout.WEST);
+
+		districtList = new JList<District>(new Vector<District>(this.districts));
+		districtList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		districtList.addListSelectionListener(this);
+		JScrollPane districtScrollPane = new JScrollPane(districtList,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listPanel.add(districtScrollPane, BorderLayout.EAST);
+
+		JPanel buttonPanel = new JPanel();
+		okButton = new JButton("OK");
+		okButton.setEnabled(false);
+		okButton.addActionListener(this);
+
+		buttonPanel.add(okButton);
+
+		this.setLayout(new BorderLayout());
+
+		this.add(listPanel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
+
+		this.pack();
+		this.setVisible(true);
+	}
+
+	private void setDistricts() {
+		if (this.choosenState == null)
+			return;
+		Vector<District> listDistricts = new Vector<District>();
+		for (District d : this.districts) {
+			if (d.getfState().equals(this.choosenState)) {
+				listDistricts.add(d);
+			}
+		}
+		this.districtList.setListData(listDistricts);
+		this.repaint();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if (this.districtList.getSelectedIndex() != -1) {
+			this.okButton.setEnabled(true);
+		} else {
+			this.okButton.setEnabled(false);
+		}
+
+		if (e.getValueIsAdjusting())
+			return;
+		
+		if(e.getSource() instanceof JList){
+		JList list = (JList) e.getSource();
+		
+		if(list.equals(stateList)){
+		this.choosenState = this.stateList.getSelectedValue();
+		this.setDistricts();
+		}
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

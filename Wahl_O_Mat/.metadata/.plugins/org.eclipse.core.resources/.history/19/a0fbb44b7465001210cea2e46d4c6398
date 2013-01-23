@@ -1,0 +1,91 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class LoginPanel extends JPanel implements ActionListener{
+
+	private JPasswordField admin_passwdTextField;
+	private JTextField urlTextField;
+	private JTextField usernameTextField;
+	private JPasswordField dbPasswdTextField;
+	private char[] login = {'a'};
+	private String url = "jdbc:postgresql://minitux.dyndns.org:5432/btw2009";
+	private String username = "btw2009";
+	private String password = "btw2009";
+	
+	public LoginPanel(){
+		super();
+		
+		JPanel adminPasswdPanel = new JPanel();		
+		JLabel adminPasswdlabel = new JLabel("Administrator-Passwort:");
+		admin_passwdTextField = new JPasswordField();
+		admin_passwdTextField.setColumns(20);
+		adminPasswdPanel.add(adminPasswdlabel);
+		adminPasswdPanel.add(admin_passwdTextField);
+		
+		JPanel urlPanel = new JPanel();
+		JLabel urlLabel = new JLabel("Bitte URL zur Datenbank eintragen");
+		urlTextField = new JTextField(this.url);
+		urlTextField.setColumns(20);
+		urlPanel.add(urlLabel);
+		urlPanel.add(urlTextField);
+		
+		JPanel usernamePanel = new JPanel();
+		JLabel usernameLabel = new JLabel("Bitte Benutzername der Datenbank eintragen");
+		usernameTextField = new JTextField(this.username);
+		usernameTextField.setColumns(20);
+		usernamePanel.add(usernameLabel);
+		usernamePanel.add(usernameTextField);
+		
+		JPanel dbPasswdPanel = new JPanel();
+		JLabel dbPasswdLabel = new JLabel("Bitte Passwort der Datenbank eintragen");
+		
+		dbPasswdTextField = new JPasswordField(this.password);
+		dbPasswdTextField.setColumns(20);
+		dbPasswdPanel.add(dbPasswdLabel);
+		dbPasswdPanel.add(dbPasswdTextField);
+		
+		
+		JPanel buttonPanel = new JPanel();
+		JButton b = new JButton("Anmelden");
+		buttonPanel.add(b);	
+		b.addActionListener(this);
+		
+		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		this.add(urlPanel);
+		this.add(usernamePanel);
+		this.add(dbPasswdPanel);
+		this.add(adminPasswdPanel);
+		this.add(buttonPanel);
+		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		System.out.println("TEST");
+		if(this.validateLogin()){
+			System.out.println("VALIDATED");
+		}
+	}
+	
+	private boolean validateLogin(){
+		if(admin_passwdTextField.getPassword().equals(this.login)) return true;
+		return false;
+	}
+	
+	
+	
+	
+}

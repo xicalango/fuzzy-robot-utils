@@ -1,0 +1,58 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.MatteBorder;
+
+import domain.BallotCard;
+import domain.DCandidate;
+
+public class BallotCardPanel extends JPanel {
+
+	private BallotCard ballotCard;
+	
+	public BallotCardPanel(BallotCard ballotCard){
+		super();
+		
+		this.ballotCard = ballotCard;
+				
+		this.setLayout(new BorderLayout(1,2));
+		
+		VotePanel firstVote = VotePanelFabric.getFirstVotePanel(ballotCard);
+			
+
+		VotePanel secondVote = VotePanelFabric.getSecondVotePanel(ballotCard);
+				
+		
+		
+		this.add(firstVote);
+		//this.add(secondVote);
+	}
+
+	
+
+
+
+	
+	
+	
+}

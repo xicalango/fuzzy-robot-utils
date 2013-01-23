@@ -1,0 +1,52 @@
+package persistence;
+
+import java.util.List;
+import java.util.UUID;
+
+import domain.DCandidate;
+import domain.District;
+import domain.PartyList;
+import java.sql.*;
+
+public class DataHandler implements IDataHandler {
+
+	public DataHandler() throws ClassNotFoundException, SQLException{
+		
+		Class.forName("org.postgresql.Driver");
+		Connection dbConnection = DriverManager.getConnection("jdbc:postgresql://http://minitux.dyndns.org:5432", "btw2009", "btw2009");
+		
+		
+	}
+	
+	@Override
+	public List<District> getDistricts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DCandidate> getDCandidates(District district) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PartyList> getPartys(District district) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean access(UUID uuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean vote(UUID uuid, PartyList party, DCandidate dCandidate,
+			District district) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

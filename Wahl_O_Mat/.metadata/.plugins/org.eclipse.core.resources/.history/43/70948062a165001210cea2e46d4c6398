@@ -1,0 +1,71 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
+
+import domain.BallotCard;
+import domain.DCandidate;
+
+public class BallotCardPanel extends JPanel {
+
+	private BallotCard ballotCard;
+	
+	public BallotCard getBallotCard() {
+		return ballotCard;
+	}
+
+	public void setBallotCard(BallotCard ballotCard) {
+		this.ballotCard = ballotCard;
+	}
+
+	public BallotCardPanel(BallotCard ballotCard){
+		super();
+		
+		this.ballotCard = ballotCard;
+				
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		VotePanel firstVote = VotePanelFabric.getFirstVotePanel(ballotCard);			
+
+		VotePanel secondVote = VotePanelFabric.getSecondVotePanel(ballotCard);		
+		
+		JScrollPane firstVotePane = new JScrollPane(firstVote, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		JScrollPane secondVotePane = new JScrollPane(secondVote, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		
+		this.add(firstVotePane);
+		this.add(secondVotePane);
+	}
+
+	
+
+
+
+	
+	
+	
+}

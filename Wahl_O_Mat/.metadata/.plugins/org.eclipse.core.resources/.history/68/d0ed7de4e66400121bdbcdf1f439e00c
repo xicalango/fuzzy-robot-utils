@@ -1,0 +1,21 @@
+package persistence;
+
+import java.util.List;
+import java.util.UUID;
+
+import domain.DCandidate;
+import domain.District;
+import domain.PartyList;
+
+public interface IDataHandler {
+	
+	List<District> getDistricts();
+	
+	List<DCandidate> getDCandidates(District district);
+	
+	List<PartyList> getPartys(District district);
+	
+	boolean access(UUID uuid);
+	
+	boolean vote(UUID uuid, PartyList party, DCandidate dCandidate, District district);
+}

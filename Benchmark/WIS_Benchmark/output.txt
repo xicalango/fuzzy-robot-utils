@@ -1,0 +1,108 @@
+Terminal 1:
+q1 Avg: 2100.0 ms
+q4 Avg: 3488.0 ms
+q5 Avg: 1878.0 ms
+q3 Avg: 3424.0 ms
+q6 Avg: 736.0 ms
+q2 Avg: 2068.0 ms
+
+
+Terminal 2:
+q5 Avg: 2390.0 ms
+q2 Avg: 3309.0 ms
+q1 Avg: 1834.0 ms
+q4 Avg: 3980.0 ms
+q6 Avg: 656.0 ms
+q3 Avg: 3098.0 ms
+
+
+Terminal 3:
+q3 Avg: 6844.0 ms
+q1 Avg: 1335.0 ms
+q6 Avg: 554.0 ms
+q5 Avg: 1043.0 ms
+
+
+Terminal 4:
+q3 Avg: 5984.0 ms
+q2 Avg: 2176.0 ms
+q1 Avg: 940.0 ms
+q5 Avg: 1552.0 ms
+
+
+Terminal 5:
+q2 Avg: 3316.0 ms
+q6 Avg: 528.0 ms
+q3 Avg: 4298.0 ms
+q4 Avg: 2376.0 ms
+q1 Avg: 1116.0 ms
+
+
+Terminal 6:
+q2 Avg: 2951.0 ms
+q3 Avg: 4476.0 ms
+q4 Avg: 3723.0 ms
+q1 Avg: 1082.0 ms
+q5 Avg: 725.0 ms
+
+
+Terminal 7:
+q6 Avg: 1360.0 ms
+q5 Avg: 1789.0 ms
+q4 Avg: 3453.0 ms
+q2 Avg: 2624.0 ms
+q3 Avg: 4369.0 ms
+q1 Avg: 1031.0 ms
+
+
+Terminal 8:
+q1 Avg: 2167.0 ms
+q5 Avg: 1323.0 ms
+q3 Avg: 2852.0 ms
+q4 Avg: 3405.0 ms
+q2 Avg: 2161.0 ms
+
+
+Terminal 9:
+q2 Avg: 3705.0 ms
+q3 Avg: 4167.0 ms
+q1 Avg: 1998.0 ms
+q5 Avg: 1073.0 ms
+q4 Avg: 2397.0 ms
+
+
+Terminal 10:
+q4 Avg: 4759.0 ms
+q1 Avg: 1059.0 ms
+q5 Avg: 2966.0 ms
+q6 Avg: 1310.0 ms
+q3 Avg: 4063.0 ms
+q2 Avg: 1944.0 ms
+
+
+
+q2:
+ Executions: 17
+Sum time: 46244.0
+Avg time: 2720.235294117647
+q3:
+ Executions: 24
+Sum time: 101575.0
+Avg time: 4232.291666666667
+q4:
+ Executions: 11
+Sum time: 38481.0
+Avg time: 3498.2727272727275
+q6:
+ Executions: 8
+Sum time: 7058.0
+Avg time: 882.25
+q5:
+ Executions: 13
+Sum time: 20059.0
+Avg time: 1543.0
+q1:
+ Executions: 27
+Sum time: 39504.0
+Avg time: 1463.111111111111
+
