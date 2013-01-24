@@ -58,6 +58,8 @@ public class VoteFrame extends JFrame implements ActionListener {
 	
 	public VoteFrame(BallotCard bCard, IDataHandler handler){
 		super( );
+		this.setUndecorated(true);
+		
 		this.bCard = bCard;
 		this.handler = handler;
 		this.loginCounter = 0;
