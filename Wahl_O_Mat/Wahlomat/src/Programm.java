@@ -32,7 +32,7 @@ public class Programm {
 		
 	
 		
-		IDataHandler dh = new DataHandler("jdbc:postgresql://minitux.dyndns.org:5432/btw2009", "btw2009", "btw2009");
+		IDataHandler dh = new DataHandler();
 				
 		char[] psw = {'a'};
 		new LoginWindow(dh, psw);

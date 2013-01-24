@@ -28,10 +28,7 @@ public class DataHandler implements IDataHandler {
 	private String username;
 	private String password;
 	
-	public DataHandler(String url, String username, String password) throws ClassNotFoundException, SQLException, PSQLException{	
-		this.url = url;
-		this.username = username;
-		this.password = password;
+	public DataHandler() throws ClassNotFoundException, SQLException, PSQLException{	
 		this.loadedStates = new ArrayList<FederalState>();
 		this.loadedPartys = new ArrayList<Party>();
 		Class.forName("org.postgresql.Driver");		
@@ -246,6 +243,20 @@ public class DataHandler implements IDataHandler {
 		}
 		return this.loadedStates;
 	}
+
+	public void setDBUrl(String url) {
+		this.url = url;		
+	}
+
+	public void setDBUserName(String username) {
+		this.username = username;
+	}
+
+	public void setDBPasswd(String password) {
+		this.password = password;
+	}
+
+
 
 
 }

@@ -33,10 +33,10 @@ public class LoginWindow extends JFrame implements ActionListener{
 	private JTextField urlTextField;
 	private JTextField usernameTextField;
 	private JPasswordField dbPasswdTextField;
+	private IDataHandler dh;
 	private String presetDBUrl = "jdbc:postgresql://minitux.dyndns.org:5432/btw2009";
 	private String presetDBUserName = "btw2009";
 	private String presetDBPassword = "btw2009";
-	private IDataHandler dh;
 	private char[] login;
 	
 	public LoginWindow(IDataHandler dh, char[] login){
@@ -99,6 +99,12 @@ public class LoginWindow extends JFrame implements ActionListener{
 		if(this.validateLogin()){
 			try {
 				
+				this.dh.setDBUrl(this.urlTextField.getText());
+				
+				this.dh.setDBUserName(this.usernameTextField.getText());
+				
+				this.dh.setDBPasswd(new String(this.dbPasswdTextField.getPassword()));
+								
 				this.dh.establishConnection();
 				
 				List<District> districts = this.dh.getDistricts();

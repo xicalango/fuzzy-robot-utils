@@ -11,6 +11,14 @@ import domain.PartyList;
 
 public interface IDataHandler {
 	
+	void setDBUrl(String url);
+	
+	void setDBUserName(String name);
+	
+	void setDBPasswd(String passwd);
+	
+	
+	
 	List<District> getDistricts() throws SQLException;
 	
 	List<DCandidate> getDCandidates(District district) throws SQLException;

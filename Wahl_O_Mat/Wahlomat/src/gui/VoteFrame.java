@@ -23,6 +23,7 @@ import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,7 +57,7 @@ public class VoteFrame extends JFrame implements ActionListener {
 	private UUID uuid;
 	
 	public VoteFrame(BallotCard bCard, IDataHandler handler){
-		super();
+		super( );
 		this.bCard = bCard;
 		this.handler = handler;
 		this.loginCounter = 0;
@@ -66,7 +67,8 @@ public class VoteFrame extends JFrame implements ActionListener {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device;		
 		device = ge.getDefaultScreenDevice();		
-		device.setFullScreenWindow(this);		
+		device.setFullScreenWindow(this);
+		
 				
 		//Do Key Bindings
 		Action exitAction = new AbstractAction( "Ende" ) {
@@ -94,9 +96,11 @@ public class VoteFrame extends JFrame implements ActionListener {
 		this.setLoginPanel();
 		this.add(infoPanel, BorderLayout.NORTH);
 		//this.add(centerPanel);		
-				
+		
 	    this.setResizable(false);		
-		this.setVisible(true);		
+		this.setVisible(true);
+		
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 	
 	
