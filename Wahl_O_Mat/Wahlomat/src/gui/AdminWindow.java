@@ -83,6 +83,9 @@ public class AdminWindow extends JFrame implements ListSelectionListener,
 		this.setVisible(true);
 	}
 
+	/**
+	 * This Method sets the district list dependend on the choosen State
+	 */
 	private void setDistricts() {
 		if (this.choosenState == null)
 			return;
@@ -96,6 +99,9 @@ public class AdminWindow extends JFrame implements ListSelectionListener,
 		this.repaint();
 	}
 
+	/**
+	 * This method is called every time when a change in state list occurs. Then the district list gets updated (via setDistricts method) 
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (this.districtList.getSelectedIndex() != -1) {
@@ -118,6 +124,10 @@ public class AdminWindow extends JFrame implements ListSelectionListener,
 
 	}
 
+	
+	/**
+	 * This method loads the ballotcard from database (if ok-button clicked)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() instanceof JButton){

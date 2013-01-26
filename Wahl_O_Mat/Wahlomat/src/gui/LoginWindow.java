@@ -1,9 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.ComponentOrientation;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,21 +7,17 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import org.postgresql.util.PSQLException;
-
+import persistence.IDataHandler;
 import domain.District;
 import domain.FederalState;
-
-import persistence.DataHandler;
-import persistence.IDataHandler;
 
 public class LoginWindow extends JFrame implements ActionListener{
 
@@ -94,6 +86,10 @@ public class LoginWindow extends JFrame implements ActionListener{
 		
 	}
 
+	/**
+	 * This method first validates the admin-password (via validateLogin) and then trys to connect to the database. 
+	 * If  a connection is not possible, it shows a error-message-dialog. Otherwise it starts the admin-window.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(this.validateLogin()){
@@ -115,18 +111,20 @@ public class LoginWindow extends JFrame implements ActionListener{
 				new AdminWindow(districts, states, this.dh);
 				
 				this.dispose();
-			}
-			catch (PSQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(this,  "Verbindungsversuch schlug fehl. Bite überprüfen Sie die eingegebenen Daten und versuchen es erneut.");
 			}
 			
 		}
+		else{
+			JOptionPane.showMessageDialog(this,  "Die eingebenen Daten waren nicht korrekt. Bite überprüfen Sie die eingegebenen Daten und versuchen es erneut.");
+		}
 	}
 	
+	/**
+	 * Validates the admin-password
+	 * @return true if the adim password was inserted correctly
+	 */
 	private boolean validateLogin(){
 		if(Arrays.equals(admin_passwdTextField.getPassword(),this.login)) return true;
 		return false;

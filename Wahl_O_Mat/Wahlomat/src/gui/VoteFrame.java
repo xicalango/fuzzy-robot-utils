@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -132,7 +133,7 @@ public class VoteFrame extends JFrame implements ActionListener {
 	
 	private void setIllegalHandlingPanel(){
 		this.removeLoginPanel();
-		this.infoLabel.setText("Ein möglicher Betrugsversuch wurde erkannt. Bitte melden Sie sich bei der Wahlaufsicht.");
+		this.infoLabel.setText("<html>Ein möglicher Betrugsversuch wurde erkannt. <p/>Bitte melden Sie sich bei der Wahlaufsicht.</html>");
 		this.infoLabel.setForeground(Color.red);
 		this.infoLabel.setFont(new Font("Arial", Font.BOLD, 35));
 		this.repaint();
@@ -210,12 +211,13 @@ public class VoteFrame extends JFrame implements ActionListener {
 			}
 			
 			if(b.equals(this.voteButton)){
-				try {
+				boolean voteCounted = false;
+				try {					
 					DCandidate votedCand = this.ballotCardPanel.getFirstVote();
 					PartyList votedPartyList = this.ballotCardPanel.getSecondVote();
 					
 					this.handler.establishConnection();
-					this.handler.vote(uuid, votedPartyList, votedCand, this.bCard.getDistrict());
+					voteCounted = this.handler.vote(uuid, votedPartyList, votedCand, this.bCard.getDistrict());
 					this.handler.closeConnection();
 					
 					this.uuid = null;
@@ -225,11 +227,16 @@ public class VoteFrame extends JFrame implements ActionListener {
 					this.revalidate();
 					
 				} catch (NoVotePerformedException e1) {
-					this.infoLabel.setText("Bitte geben sie beide Stimmen ab");
-				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					this.infoLabel.setText("Bitte geben sie beide Stimmen ab.");
+				} catch (Exception e2) {
 					e2.printStackTrace();
+					this.removeVotePanel();
+					this.add(new JPanel(), BorderLayout.CENTER);
+					this.infoLabel.setText("<html>Es ist ein schwerwiegender Fehler aufgetreten. <p/>Bitte melden Sie sich bei der Wahlaufsicht.<p/> Code: VC is " + voteCounted + "</html>");
+					this.revalidate();
 				}
+		
 				
 			}
 			
@@ -239,19 +246,9 @@ public class VoteFrame extends JFrame implements ActionListener {
 		
 	}
 	
-	private boolean validateLogIn(){
-		try{
+	private boolean validateLogIn() throws SQLException, IllegalArgumentException{
 		UUID u = UUID.fromString(this.loginTextField.getText());		
-		return this.handler.access(u);		
-		}
-		catch(IllegalArgumentException e){
-			System.out.println("KEINE VALIDE UUID!!!");
-			return false;
-		}
-		catch(SQLException e){
-			System.out.println("Keine Verbindung zur Datenbank!!!");
-			return false;
-		}		
+		return this.handler.access(u);			
 	}
 
 	

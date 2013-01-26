@@ -203,16 +203,25 @@ public class DataHandler implements IDataHandler {
 	}
 
 	@Override
-	public void vote(UUID uuid, PartyList party, DCandidate dCandidate, District district) throws SQLException{
+	public boolean vote(UUID uuid, PartyList party, DCandidate dCandidate, District district) throws SQLException{
 	this.connection.setAutoCommit(false);
-	PreparedStatement firstVoteStatement = this.connection.prepareStatement("INSERT INTO Erststimme (wahlkreis_id, direktkandidat_id) values(?, ?)" ); 	
+	PreparedStatement firstVoteStatement = this.connection.prepareStatement("INSERT INTO erststimme_q7 (wahlkreis_id, direktkandidat_id) values(?, ?)" ); 	
 	firstVoteStatement.setInt(1, district.getID());
+	if(dCandidate != null){
 	firstVoteStatement.setInt(2, dCandidate.getID());	
+	}
+	else{
+		firstVoteStatement.setObject(2,  null);
+	}
 	
-	
-	PreparedStatement secondVoteStatement = this.connection.prepareStatement("INSERT INTO Zweitstimme (wahlkreis_id, landesliste_id) values(?, ?)");
+	PreparedStatement secondVoteStatement = this.connection.prepareStatement("INSERT INTO zweitstimme_q7 (wahlkreis_id, landesliste_id) values(?, ?)");
 	secondVoteStatement.setInt(1, district.getID());
+	if(party != null){
 	secondVoteStatement.setInt(2, party.getID());	
+	}
+	else{
+		secondVoteStatement.setObject(2, null);
+	}
 	
 	PreparedStatement updateUUIDTableStatement = this.connection.prepareStatement("Update berechtigten_uuid set used = true where id = ?");
 	updateUUIDTableStatement.setObject(1, uuid);
@@ -223,6 +232,7 @@ public class DataHandler implements IDataHandler {
 	
 	this.connection.commit();
 	this.connection.setAutoCommit(true);
+	return true;
 	}
 
 	@Override

@@ -1,24 +1,7 @@
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import gui.BallotCardPanel;
 import gui.LoginWindow;
-import gui.VoteFrame;
-
-import javax.swing.JFrame;
-import javax.swing.JRadioButton;
-
+import java.sql.SQLException;
 import persistence.DataHandler;
 import persistence.IDataHandler;
-
-import domain.BallotCard;
-import domain.DCandidate;
-import domain.District;
-import domain.FederalState;
-import domain.LCandidate;
-import domain.Party;
-import domain.PartyList;
 
 
 public class Programm {
@@ -35,6 +18,7 @@ public class Programm {
 		IDataHandler dh = new DataHandler();
 				
 		char[] psw = {'a'};
+		// Starts the login Window for the Admin. Sets the Admin-Password to a
 		new LoginWindow(dh, psw);
 				
 	}

@@ -29,7 +29,7 @@ public interface IDataHandler {
 	
 	boolean access(UUID uuid) throws SQLException;
 	
-	void vote(UUID uuid, PartyList party, DCandidate dCandidate, District district) throws SQLException;
+	boolean vote(UUID uuid, PartyList party, DCandidate dCandidate, District district) throws SQLException;
 	
 	void establishConnection() throws SQLException;
 	

@@ -27,6 +27,10 @@ public class VotePanelFabric {
 		
 		for(DCandidate d : bCard.getdCandidateList()){
 			
+			if(d.getFirstName().equals("Übrige") && d.getLastName().equals("Übrige") && 
+					d.getParty().getName().equals("Übrige"))
+				continue;
+			
 			JLabel candLabel = new JLabel("<html>" + d.getFirstName() + "<p/>" + d.getLastName() + "</html>");	
 			candLabel.setFont(new Font("Arial", Font.BOLD, 25));
 			JLabel partyLabel = new JLabel("<html>" + " Parteilos " + "</html>");
@@ -36,9 +40,16 @@ public class VotePanelFabric {
 			partyLabel.setFont(new Font("Arial", Font.ITALIC, 18));
 			JRadioButton button = new JRadioButton();
 			bg.add(button);
-			
+
 			voteItems.add(new VoteItem<DCandidate>(candLabel, partyLabel, button, d));
 		}
+		
+		JRadioButton invalidButton = new JRadioButton();
+		bg.add(invalidButton);
+		JLabel invalidLabel = new JLabel("Ungültig");		
+		invalidLabel.setFont(new Font("Arial", Font.BOLD, 25));
+		VoteItem<DCandidate> invalidItem = new VoteItem<DCandidate>(new JLabel(), invalidLabel, invalidButton, null);
+		voteItems.add(invalidItem);
 		
 		 return new VotePanel<DCandidate>("Erststimme", voteItems);		
 	}
@@ -71,6 +82,13 @@ public class VotePanelFabric {
 			
 			voteItems.add(new VoteItem<PartyList>(partyNameLabel, candListLabel, button, pl));
 		}
+		
+		JRadioButton invalidButton = new JRadioButton();
+		bg.add(invalidButton);
+		JLabel invalidLabel = new JLabel("Ungültig");		
+		invalidLabel.setFont(new Font("Arial", Font.BOLD, 25));
+		VoteItem<PartyList> invalidItem = new VoteItem<PartyList>(new JLabel(), invalidLabel, invalidButton, null);
+		voteItems.add(invalidItem);
 		
 		 return new VotePanel<PartyList>("Zweitstimme", voteItems);		
 	}
