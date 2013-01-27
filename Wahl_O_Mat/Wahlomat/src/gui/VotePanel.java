@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class VotePanel <T> extends JPanel {
 	public VotePanel(String description, List<VoteItem<T>> voteItems){
 		this.voteItems = voteItems;
 		this.descriptionLabel = new JLabel(description);
+		this.descriptionLabel.setFont(new Font("Arial", Font.BOLD, 25));
 						
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
